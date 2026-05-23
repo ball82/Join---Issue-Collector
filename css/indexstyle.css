@@ -1,0 +1,564 @@
+/* === HEADER === */
+header {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #ffffff;
+  box-sizing: border-box;
+}
+
+.join-logo {
+  width: 110px;
+  height: auto;
+  cursor: pointer;
+}
+
+.signup-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+.signup-text {
+  color: #2a3647;
+  font-size: 16px;
+  font-family: "Inter", sans-serif;
+}
+
+/* — compact & taller Header Button — */
+.signup-btn {
+  background-color: #2a3647;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 10px;
+  min-width: 80px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.signup-btn:hover {
+  background-color: #5fc0ea;
+  box-shadow: 0 0 16px rgba(95, 192, 234, 0.8);
+}
+
+/* === BODY / MAIN === */
+body {
+  margin: 0;
+  background-color: #ffffff;
+  font-family: "Inter", sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1900px;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 480px;
+  max-width: calc(100% - 40px);
+  margin: 90px auto 0;
+  padding: 40px 31px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 40px;
+  color: #2a3647;
+  margin-top: 1px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.blueline {
+  width: 90px;
+  height: 3px;
+  background-color: #29abe2;
+  border-radius: 2px;
+  margin-bottom: 32px;
+}
+
+/* === INPUTS === */
+.input-group {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.input-group input::placeholder {
+  color: #d1d1d1;
+  opacity: 1;
+  /* important, so browser doesn't apply transparency */
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  font-size: 16px;
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  border-color: #29abe2;
+}
+
+.input-group .material-icons {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9a9a9a;
+  cursor: pointer;
+}
+
+/* === PRIVACY ACCEPT FIELD === */
+.privacy-accept {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: -5px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  color: #a8a8a8;
+}
+
+.privacy-accept input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #29abe2;
+  /* modern color for Checkbox */
+}
+
+.privacy-accept a {
+  color: #5fc0ea;
+  text-decoration: none;
+}
+
+.privacy-accept a:hover {
+  text-decoration: underline;
+}
+
+/* === BUTTONS === */
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+button {
+  width: 140px;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dark-button {
+  background-color: #2a3647;
+  color: white;
+}
+
+.dark-button:hover {
+  background-color: #5fc0ea;
+  box-shadow: 0 0 20px rgba(95, 192, 234, 0.9);
+}
+
+button:not(.dark-button) {
+  background-color: white;
+  border: 1px solid #2a3647;
+  color: #2a3647;
+}
+
+button:not(.dark-button):hover {
+  background-color: #e8f4fb;
+  border-color: #5fc0ea;
+  color: #5fc0ea;
+  box-shadow: 0 0 12px rgba(95, 192, 234, 0.5);
+}
+
+/* === FOOTER === */
+.footer-links {
+  font-size: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+  margin-top: auto;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.footer-links a {
+  color: #a8a8a8;
+  text-decoration: none;
+  font-family: "Inter", sans-serif;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: #5fc0ea;
+}
+
+/* === FORM TOGGLE ANIMATION === */
+.form-section {
+  transition: opacity 0.4s ease, transform 0.3s ease;
+}
+
+.hidden {
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.active {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 480px) {
+  #signup-top {
+    display: none;
+  }
+
+  body {
+    overflow: auto;
+  }
+
+  #signup-bottom {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  main {
+    width: 95%;
+    margin-top: 20px;
+    padding: 28px 20px;
+  }
+
+  .join-logo {
+    width: 60px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .signup-btn {
+    width: auto;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 12px;
+    font-size: 1rem;
+    padding-bottom: 20px;
+    padding-top: 10px;
+  }
+
+  .privacy-accept {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 481px) {
+  #signup-bottom {
+    display: none;
+  }
+
+  #signup-top {
+    display: flex;
+  }
+}
+
+/* === SIGN-UP HEADER (with arrow) === */
+.signup-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.signup-header h1 {
+  flex-grow: 1;
+  text-align: center;
+  margin: 0;
+  font-size: 40px;
+  color: #2a3647;
+}
+
+.back-arrow {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #5fc0ea;
+  cursor: pointer;
+  font-size: 26px;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.back-arrow:hover {
+  color: #29abe2;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.dark-button.inactive {
+  opacity: 0.65;
+  cursor: pointer; 
+  transform: none;
+  box-shadow: none;
+  width: 100%;
+}
+
+.dark-button.inactive:after {
+  content: "";
+  display: block;
+  height: 0;
+  width: 0;
+}
+
+
+/* === CUSTOM ICONS IN INPUT FIELDS === */
+.input-group {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  /* space on the right for icon */
+  font-size: 16px;
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  border-color: #29abe2;
+}
+
+/* Position icons on the right side of the field */
+.input-group img.icon-email,
+.input-group img.icon-lock {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  /* Size can be adjusted */
+  height: 22px;
+  pointer-events: none;
+  /* prevents the icon from blocking clicks */
+  opacity: 0.7;
+}
+
+.input-group img.icon-mail {
+  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+.input-group img.icon-lock {
+  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+/* If you want a slight effect on hover or focus */
+.input-group input:focus+img {
+  opacity: 1;
+  filter: none;
+}
+
+/* === ICONS IN INPUT (COMPLEMENTED WITH PERSON) === */
+.input-group img.icon-person,
+.input-group img.icon-mail,
+.input-group img.icon-lock {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  opacity: 0.7;
+  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+/* Effect on focus */
+.input-group input:focus+img {
+  opacity: 1;
+  filter: none;
+}
+
+/* === STARTANIMATION === */
+#intro-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.8s ease, background-color 0.5s ease;
+  /* smoother transition for BG */
+}
+
+#intro-screen img {
+  width: 220px;
+  height: auto;
+  transition: opacity 0.3s ease, filter 0.5s ease;
+  /* for smoother logo transition */
+}
+
+/* Logo flies diagonally to top left */
+@keyframes logo-move {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+
+  100% {
+    transform: scale(0.35) translate(-120vw, -120vh);
+  }
+}
+
+.join-logo {
+  visibility: hidden;
+}
+
+body.loaded .join-logo {
+  visibility: visible;
+}
+
+/* Body invisible until animation ends */
+body.loaded main,
+body.loaded header,
+body.loaded .footer-links,
+body.loaded #signup-bottom {
+  opacity: 1;
+}
+
+main,
+header,
+.footer-links,
+#signup-bottom {
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+/* === INTRO-SCREEN RESPONSIVE === */
+#intro-screen img {
+  width: 220px;
+  height: auto;
+  transition: width 0.3s ease;
+}
+
+/* On mobile: smaller start logo + initially dark BG */
+@media (max-width: 480px) {
+  #intro-screen {
+    background-color: #2a3647;
+    /* Initially dark to avoid white flash */
+  }
+
+  #intro-screen img {
+    width: 150px;
+  }
+}
+
+/* 🔔 Notification Styling */
+#notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.notification {
+  padding: 14px 18px;
+  border-radius: 12px;
+  color: white;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: fadeInOut 3.2s ease forwards;
+}
+
+.notification.success {
+  background-color: #28a745;
+  /* green */
+}
+
+.notification.error {
+  background-color: #dc3545;
+  /* rot */
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  10%,
+  80% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+}

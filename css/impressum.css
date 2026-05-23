@@ -1,0 +1,87 @@
+body {
+  margin: 0;
+}
+
+.user-section {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.main-content {
+  margin-left: 240px;
+  padding: 196px 84px 32px;
+  max-width: 1680px;
+  box-sizing: border-box;
+}
+
+.index a {
+  color: #2a3647;
+  text-decoration: none;
+}
+
+.index a:hover {
+  text-decoration: underline;
+}
+
+/* FOOTER SPACING */
+footer {
+  margin-left: 280px;
+  padding: 40px;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.foodimg img {
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+}
+
+.foodNots a {
+  color: #2a3647;
+  text-decoration: none;
+  margin-right: 12px;
+}
+
+.foodNots a:hover {
+  text-decoration: underline;
+}
+
+.Datenschutz a {
+  color: #2a3647;
+  text-decoration: none;
+}
+
+.Datenschutz a:hover {
+  text-decoration: underline;
+}
+/* ===== RESPONSIVE ONLY, Desktop remains unchanged ===== */
+@media (max-width: 1023px) {
+  /* Hide Sidebar */
+  .main-sidebar {
+    display: none;
+  }
+
+  /* Header text no longer indents for Sidebar */
+  .marginsidebar {
+    margin-left: 0;
+  }
+
+  /* Content uses full width below fixed Header */
+  .main-content {
+    margin-left: 0; /* no more space for Sidebar */
+    margin-top: 120px; /* maintains spacing from Header */
+    padding: 24px;
+    max-width: 100%;
+  }
+
+  /* Footer without Sidebar spacing */
+  footer {
+    margin-left: 0;
+    padding: 24px;
+  }
+}

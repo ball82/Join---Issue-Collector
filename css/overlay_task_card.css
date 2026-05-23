@@ -1,0 +1,444 @@
+/* Scrollbar behavior for Overlay */
+#taskCardContent,
+.overlay-task-card,
+.overlay-task-card-content {
+  max-height: 100vh;
+  overflow: auto;
+}
+
+/* Ensure inner areas don't open their own scrollbars */
+.task-card-header,
+.task-card-body,
+.task-card-footer,
+.task-edit-header,
+.task-edit-scroll,
+.task-edit-footer {
+  position: static;
+}
+
+/* Overlay Task Card Styles */
+.overlay-task-card {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+}
+
+/* Optional: Klasse, falls du statt style.display Klassen nutzen willst */
+.overlay-task-card--open {
+  display: flex;
+}
+
+/* Confirmation popup (used for delete confirmations) */
+.confirm-overlay {
+  display: none;
+  position: fixed;
+  z-index: 1100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45);
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-overlay--open {
+  display: flex;
+}
+
+.confirm-dialog {
+  width: 20rem;
+  max-width: 92%;
+  background: #ffffff;
+  padding: 20px 20px 16px;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+  border: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.confirm-dialog__title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.confirm-dialog__message {
+  margin: 0 0 18px;
+  color: #374151;
+  font-size: 15px;
+}
+
+.confirm-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.confirm-dialog__button {
+  min-width: 88px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.confirm-dialog__button--cancel {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.confirm-dialog__button--confirm {
+  background: #dc2626;
+  color: #fff;
+}
+
+.task-card-content {
+  width: 525px;
+  max-width: 600px;
+  background-color: #fefefe;
+  margin: 0;
+  padding: 24px 24px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Ensure assigned-to controls inside overlay use full width and inherit spacing */
+.task-card-body .assigned-to-wrapper {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 8px;
+}
+
+.task-card-body .assigned-to-input {
+  padding: 12px 16px;
+  font-size: 16px;
+  border-radius: 8px 8px 0 0;
+}
+
+.task-card-body .assigned-to-selected {
+  padding: 10px 12px;
+  gap: 8px;
+}
+
+/* ensure wrapper is positioned relative in overlays so toggle sits inside field */
+.task-card-body .assigned-to-wrapper {
+  position: relative;
+}
+
+.task-card-body .assigned-to-toggle {
+  right: 14px;
+}
+
+.task-card-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.task-card-header-category-close {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.task-card-category {
+  padding: 4px 24px;
+  border-radius: 8px;
+  background: #0038ff;
+  color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-size: 23px;
+  font-weight: 400;
+}
+
+.task-card-close {
+  cursor: pointer;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.task-card-close:hover {
+  background-color: #f3f4f6;
+}
+
+.task-card-header p,
+.task-card-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+.task-card-body {
+  display: grid;
+  grid-gap: 24px;
+}
+
+.task-card-story {
+  display: grid;
+  padding-top: 8px;
+  grid-gap: 24px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.task-card-body table {
+  width: 60%;
+  border-collapse: collapse;
+}
+
+.task-card-body th,
+.task-card-body td {
+    display: flex;
+    text-align: left;
+    padding-bottom: 8px;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+}
+
+.task-card-body table td:first-child {
+  width: 120px;
+  color: #6b7280;
+}
+
+.task-card-body table tr{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+}
+.prio-text{
+  margin-right: 1.8rem;
+}
+.overlay-task-card-label-big {
+  font-size: 20px;
+  font-weight: 400;
+  margin: 0 0 12px;
+  font-family: "Inter", sans-serif;
+}
+
+/* Assigned Detail */
+.assigned-list-detail {
+  margin-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.assigned-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.assigned-avatar-detail {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.assigned-name {
+  font-size: 19px;
+  font-weight: 400;
+  font-family: "Open Sans", sans-serif;
+}
+
+/* Subtasks Detail */
+.subtask-list-detail {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.subtask-item {
+  display: flex;
+}
+
+.subtask-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.subtask-checkbox input {
+  display: none;
+}
+
+.subtask-custom-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 2px solid #111827;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  box-sizing: border-box;
+}
+
+.subtask-checkbox input:checked + .subtask-custom-box::after {
+  content: "✔";
+  color: #111827;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.subtask-title {
+  font-size: 1rem;
+  color: #111827;
+}
+
+/* Add-row inside edit overlay for new subtask input */
+.subtask-add-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.subtask-add-row .form-group__input {
+  flex: 1 1 auto;
+  padding: 8px 12px;
+}
+
+.subtask-add-btn {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  background-color: #2a3647;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Footer-Buttons */
+.task-card-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-bottom: 20px;
+  gap: 12px;
+}
+
+.task-card-footer button {
+  min-width: 96px;
+  border: none;
+  width: 10%;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.edit-save-button{
+  border: none;
+  margin: 12px;
+  margin-bottom: 2rem;
+  width: 15%;
+  cursor: pointer;
+  padding: 12px 34px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 9px;
+  align-items: center;
+  background-color: #2a3647;
+  color: white;
+}
+.task-card-footer-edit{
+  display: flex;
+  justify-content: flex-end;
+}
+/* Edit-Form: scrollbarer Body, fester Footer */
+.task-card-edit-form {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  margin-bottom: 20px;
+}
+
+.task-edit-header {
+  flex: 0 0 auto;
+  padding-bottom: 16px;
+  background: white;
+  z-index: 10;
+}
+
+.task-edit-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 6px;
+  margin-bottom: 16px;
+}
+
+.task-edit-footer {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+  z-index: 10;
+}
+
+/* Mobile */
+@media (max-width: 1023px) {
+  .overlay-task-card {
+    height: 100vh;
+    width: 100vw;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .task-card-body table {
+    width: 100%;
+  }
+
+  .task-card-content {
+    display: block;
+    width: 100%;
+    max-width: 90vw;
+    max-height: 85vh;
+    overflow: auto;
+    height: 90vh;
+    padding: 16px;
+    margin: 0;
+    border-radius: 12px;
+    box-sizing: border-box;
+  }
+}

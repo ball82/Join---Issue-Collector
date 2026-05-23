@@ -1,0 +1,128 @@
+header {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  width: 100%;
+}
+
+.header-content {
+  background-color: #fff;
+  height: 100px;
+  color: #000;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 240px;
+  padding-right: 40px;
+  padding-left: 96px;
+  max-width: 1680px;
+}
+
+.header-title {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  color: var(--black);
+}
+
+.header-logo {
+  display: none;
+}
+
+.header-right {
+  justify-content: flex-end;
+  display: flex;
+  align-items: center;
+  color: #29abe2;
+  gap: 20px;
+}
+
+.header-user {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.header-user-round {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 3px solid #2a3647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: #29abe2;
+  box-sizing: border-box;
+  background: #fff;
+  font-style: center;
+}
+
+/* User menu dropdown */
+.user-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 12px);
+  background: var(--ink);
+  color: var(--menu);
+  border-radius: 18px 0px 18px 18px;
+  padding: 12px 12px;
+  min-width: 125px;
+  box-shadow: 0 12px 30px rgba(18, 25, 36, 0.35);
+  display: none;
+  z-index: 40;
+}
+
+.user-menu.open {
+  display: block;
+}
+
+.user-menu__link {
+  display: block;
+  color: var(--panel);
+  text-decoration: none;
+  padding: 12px 8px;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.user-menu__link:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.nav-icon {
+  width: 25px;
+  height: 25px;
+}
+
+@media (max-width: 1023px) {
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .header-content {
+    margin-left: 0px;
+    display: flex;
+    height: 80px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .header-title {
+    display: none;
+  }
+  .header-logo {
+    display: flex;
+  }
+  .nav-icon-help {
+    display: none;
+  }
+}

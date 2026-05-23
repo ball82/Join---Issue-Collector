@@ -1,0 +1,175 @@
+* {
+  margin: 0;
+  padding: 0;
+  /* box-sizing: border-box; */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-decoration: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--placeholder-color);
+  opacity: 1; /* Firefox reduces opacity by default */
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 1px;
+  height: 100%;
+  background: var(--bg);
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--black);
+  margin: 0px;
+}
+
+:root {
+  --bg: #f6f7f8;
+  --panel: #ffffff;
+  --ink: #2a3647;
+  --muted: #6b7280;
+  --border: #d1d1d1;
+  --accent: #29abe2;
+  --urgent: #ff3d00;
+  --black: #000000;
+  --shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  --placeholder-color: #d1d1d1;
+  --menu: #cdcdcd;
+  --email: #007cee;
+}
+
+h1 {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 61px;
+  color: var(--black);
+  margin: 0px;
+}
+
+h2 {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 27px;
+  color: var(--black);
+  margin: 0px;
+}
+
+h3 {
+  font-family: "Inter";
+  font-style: bold;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--black);
+  margin: 0px;
+}
+
+.material-icons {
+  font-size: 30px;
+}
+
+/* Utility-Klassen */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.block {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+.gap-8 {
+  gap: 8px;
+}
+
+.gap-16 {
+  gap: 16px;
+}
+
+/* Container & Layout */
+.container {
+  width: 100%;
+  max-width: 1020px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ========================================
+   FORM ELEMENTS RESET
+   ======================================== */
+
+input,
+textarea,
+select,
+button {
+  /* Entfernt alle Browser-Defaults */
+  all: unset;
+  box-sizing: border-box;
+
+  /* Basis-Styles */
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+
+  /* Display */
+  display: block;
+  width: 100%;
+}
+
+/* Input and Textarea specific */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="number"],
+textarea,
+select {
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #2a3647;
+  background: #ffffff;
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  padding: 12px 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+textarea:focus,
+select:focus {
+  border-color: #29abe2;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(41, 171, 226, 0.1);
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

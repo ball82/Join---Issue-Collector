@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contacts • Join</title>
+    <link
+      rel="icon"
+      href="img/logo/Logo for Favicon construction.svg"
+      type="image/svg+xml" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/fonts.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="./css/contacts.css" />
+  </head>
+
+  <body onload="includeHeaderHTML();includeSidebarHTML();">
+    <nav header-html="./templates/header.html"></nav>
+    <aside sidebar-html="./templates/sidebar.html"></aside>
+
+    <!-- contact section -->
+    <div class="main-contact">
+      <div class="contact-list">
+        <button
+          class="add-contact-button dark-button"
+          onclick="openAddContactDialog()">
+          Add new contact<img
+            class="add-icon"
+            src="img/buttons/person_add.svg"
+            alt="Add Icon" />
+        </button>
+
+        <div class="contacts-scrollable" id="contact-list">
+          <!-- Contacts are loaded dynamically from Firebase -->
+        </div>
+      </div>
+
+      <div class="add-person-mobile" onclick="openAddContactDialog()">
+        <img src="img/icons/person_add.svg" alt="Add Person" />
+      </div>
+
+      <!-- Mobile Contact Detail View -->
+      <div class="mobile-contact-detail" id="mobileContactDetail">
+        <div class="mobile-contact-header">
+          <button
+            class="mobile-back-btn"
+            onclick="closeMobileContactDetail()"
+            aria-label="Go back to contacts list">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <path
+                d="M20 24L12 16L20 8"
+                stroke="#29ABE2"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round" />
+              <line
+                x1="12"
+                y1="16"
+                x2="28"
+                y2="16"
+                stroke="#29ABE2"
+                stroke-width="3"
+                stroke-linecap="round" />
+            </svg>
+          </button>
+          <h1>Contacts</h1>
+          <span class="mobile-contact-subtitle">Better with a team</span>
+        </div>
+        <div class="mobile-contact-content">
+          <div class="mobile-contact-avatar-section">
+            <span class="mobile-contact-avatar" id="mobileContactAvatar"
+              >TW</span
+            >
+            <h2 class="mobile-contact-name" id="mobileContactName">
+              Tatjana Wolf
+            </h2>
+          </div>
+          <div class="mobile-contact-info">
+            <p class="mobile-contact-info-title">Contact Information</p>
+            <div class="mobile-contact-info-item">
+              <p class="mobile-contact-label">Email</p>
+              <a
+                class="mobile-contact-value"
+                id="mobileContactEmail"
+                href="mailto:wolf@gmail.com"
+                >wolf@gmail.com</a
+              >
+            </div>
+            <div class="mobile-contact-info-item">
+              <p class="mobile-contact-label">Phone</p>
+              <a
+                class="mobile-contact-value"
+                id="mobileContactPhone"
+                href="tel:+4922222222222">
+                +49 2222 222 22 2
+              </a>
+            </div>
+          </div>
+        </div>
+        <button
+          class="mobile-more-btn"
+          onclick="toggleMobileContactMenu()"
+          aria-label="Open contact options menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="6" r="2" fill="white" />
+            <circle cx="12" cy="12" r="2" fill="white" />
+            <circle cx="12" cy="18" r="2" fill="white" />
+          </svg>
+        </button>
+        <div class="mobile-contact-menu" id="mobileContactMenu">
+          <button
+            class="mobile-menu-item"
+            onclick="editMobileContact()"
+            aria-label="Edit contact">
+            <img src="./img/icons/edit.svg" alt="edit" />
+            Edit
+          </button>
+          <button
+            class="mobile-menu-item"
+            onclick="deleteMobileContact()"
+            aria-label="Delete contact">
+            <img src="./img/icons/delete.svg" alt="delete" />
+            Delete
+          </button>
+        </div>
+      </div>
+
+      <div class="info-contact-area">
+        <div class="info-contact-header">
+          <h2>Contacts</h2>
+          <span class="slogan">Better with a team</span>
+        </div>
+        <div class="user-infos">
+          <span class="name-logo-large" id="contactLogoLarge">AB</span>
+          <div class="user-details-large">
+            <span class="name-large" id="contactNameLarge">Tatjana Wolf</span>
+            <div class="edit-area">
+              <span onclick="openEditContactDialog()" class="edit-button">
+                <img
+                  class="edit-elements"
+                  src="./img/icons/edit.svg"
+                  alt="edit" />Edit</span
+              >
+              <span onclick="deleteCurrentContact()" class="edit-button">
+                <img
+                  class="edit-elements"
+                  src="./img/icons/delete.svg"
+                  alt="delete" />Delete</span
+              >
+            </div>
+          </div>
+        </div>
+        <p class="para-1">Contact Information</p>
+
+        <div class="contact-information">
+          <p class="para-2">Email:</p>
+          <a class="para-3" href="mailto:"></a>
+          <p class="para-2">Phone:</p>
+          <a class="para-4" href="tel:"></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Contact Dialog -->
+    <div class="add-contact-dialog" id="addContactDialog">
+      <div class="dialog-content">
+        <button
+          class="dialog-close"
+          onclick="closeAddContactDialog()"
+          aria-label="Close dialog">
+          X
+        </button>
+        <div class="dialog-left">
+          <img src="./img/logo/join_logo_white.svg" alt="Join Logo" />
+          <h2>Add contact</h2>
+          <p class="dialog-slogan" style="margin-bottom: 10px;">Tasks are better with a team!</p>
+          <div class="dialog-underline"></div>
+         
+        </div>
+        <div class="dialog-right">
+           <img src="./img/icons/person_avatar.svg" class="dialog-avatar" id="addContactAvatar"alt="Person Avatar">
+          <form class="dialog-form" id="addContactForm" novalidate>
+            <div class="input-group">
+              <div class="input-wrapper">
+                <input type="text" id="newContactName" placeholder="Name" />
+                <img
+                  src="./img/icons/person.svg"
+                  alt="Name"
+                  class="input-icon" />
+              </div>
+              <span class="error-message" id="errorContactName"></span>
+            </div>
+            <div class="input-group">
+              <div class="input-wrapper">
+                <input type="email" id="newContactEmail" placeholder="Email" />
+                <img
+                  src="./img/icons/mail.svg"
+                  alt="Email"
+                  class="input-icon" />
+              </div>
+              <span class="error-message" id="errorContactEmail"></span>
+            </div>
+            <div class="input-group">
+              <div class="input-wrapper">
+                <input type="tel" id="newContactPhone" placeholder="Phone" />
+                <img
+                  src="./img/icons/call.svg"
+                  alt="Phone"
+                  class="input-icon" />
+              </div>
+              <span class="error-message" id="errorContactPhone"></span>
+            </div>
+            <div class="dialog-buttons">
+              <button
+                type="button"
+                class="btn-cancel"
+                onclick="closeAddContactDialog()">
+                Cancel X
+              </button>
+              <button
+                type="submit"
+                class="btn-create"
+                aria-label="Create new contact">
+                Create contact
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Contact Dialog -->
+    <div class="edit-contact-dialog" id="editContactDialog">
+      <div class="dialog-overlay" onclick="closeEditContactDialog()"></div>
+      <div class="dialog-content">
+        <button
+          class="dialog-close"
+          onclick="closeEditContactDialog()"
+          aria-label="Close dialog">
+          X
+        </button>
+        <div class="dialog-left">
+          <img src="./img/logo/join_logo_white.svg" alt="Join Logo" />
+          <h2>Edit contact</h2>
+          <div class="dialog-underline"></div>
+          <div class="dialog-avatar" id="editContactAvatar">AM</div>
+        </div>
+        <div class="dialog-right">
+          <form class="dialog-form" id="editContactForm" novalidate>
+            <div class="input-group">
+              <div class="input-wrapper">
+                <input type="text" id="editContactName" placeholder="Name" />
+                <img
+                  src="./img/icons/person.svg"
+                  alt="Name"
+                  class="input-icon" />
+              </div>
+              <span class="error-message" id="errorEditName"></span>
+            </div>
+            <div class="input-group">
+              <div class="input-wrapper">
+                <input type="email" id="editContactEmail" placeholder="Email" />
+                <img
+                  src="./img/icons/mail.svg"
+                  alt="Email"
+                  class="input-icon" />
+              </div>
+              <span class="error-message" id="errorEditEmail"></span>
+            </div>
+            <div class="input-group">
+              <div class="input-wrapper">
+                <input type="tel" id="editContactPhone" placeholder="Phone" />
+                <img
+                  src="./img/icons/call.svg"
+                  alt="Phone"
+                  class="input-icon" />
+              </div>
+              <span class="error-message" id="errorEditPhone"></span>
+            </div>
+            <div class="dialog-buttons">
+              <button
+                type="button"
+                class="btn-delete"
+                onclick="deleteContactFromDialog()">
+                Delete
+              </button>
+              <button type="submit" class="btn-save">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Old Edit Contact Dialog (can be removed) -->
+    <div class="edit-overay hidden">
+      <div class="left-section">
+        <img src="./img/logo/join_logo_white.svg" alt="" />
+        <p>Edit contact</p>
+        <hr />
+      </div>
+      <div class="right-section">
+        <div class="name-logo-etition">AW</div>
+      </div>
+      <div class="edit-contact">
+        <form class="contact-edit-form" action="">
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value="Tatjana Wolf"
+            class="contact-edit-name" />
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value="tatjana.wolf@example.com"
+            class="contact-edit-email" />
+          <input
+            type="phone"
+            id="phone"
+            name="phone"
+            value="+1 (555) 123-4567"
+            class="contact-edit-phone" />
+        </form>
+        <div class="contact-edit-save-cancel">
+          <button
+            class="cancel-edit-button"
+            aria-label="Cancel editing contact">
+            Cancel
+          </button>
+          <button class="save-edit-button" aria-label="Save contact changes">
+            Save
+            <img src="./img/icons/check.svg" alt="check" class="check-icon" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="scripts/config.js"></script>
+  <script type="module" src="scripts/firebase-init.js"></script>
+  <script src="scripts/contacts.js"></script>
+  <script src="scripts/contacts_dialogs.js"></script>
+  <script src="scripts/templates.js"></script>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" id="toastNotification">
+    <span id="toastMessage">Contact successfully created</span>
+  </div>
+  <script src="scripts/headerUser.js"></script>
+</html>
