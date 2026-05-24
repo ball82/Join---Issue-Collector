@@ -1,4 +1,4 @@
-/* Inter Variable Font - Normal */
+
 @font-face {
   font-family: "Inter";
   font-style: normal;
@@ -7,7 +7,6 @@
   src: url("./fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype");
 }
 
-/* Inter Variable Font - Italic */
 @font-face {
   font-family: "Inter";
   font-style: italic;
@@ -16,14 +15,12 @@
   src: url("./fonts/Inter-Italic-VariableFont_opsz,wght.ttf") format("truetype");
 }
 
-/* Base class for Inter */
 body,
 html {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
 }
 
-/* Utility classes for different weights */
 .inter-thin {
   font-weight: 100;
 }

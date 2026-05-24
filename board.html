@@ -26,10 +26,9 @@
       <div class="board-header">
         <h1>Board</h1>
 
-        <!-- Mobile Add Task Button -->
         <img
           class="add-btn-mobile js-add-task-trigger"
-          data-status="todo"
+          data-status="triage"
           src="./img/buttons/plus add task mobile.svg"
           alt="Add Task" />
 
@@ -41,7 +40,7 @@
             aria-label="Search tasks" />
           <button
             class="add-btn-desk js-add-task-trigger"
-            data-status="todo"
+            data-status="triage"
             aria-label="Add new task">
             Add task +
           </button>
@@ -49,49 +48,38 @@
       </div>
 
       <div class="tasks-columns">
-        <!-- To Do -->
+
+        <div class="task-column" id="columnTriage" data-status="triage">
+          <div class="task-header">
+            <span>Triage</span>
+          </div>
+          <div class="task-cards" id="triage-tasks"></div>
+        </div>
+
         <div class="task-column" id="columnToDo" data-status="todo">
           <div class="task-header">
             <span>To Do</span>
-            <img
-              class="js-add-task-trigger"
-              data-status="todo"
-              src="./img/icons/plus button.svg"
-              alt="Add Task" />
           </div>
           <div class="task-cards" id="to-do-tasks"></div>
         </div>
 
-        <!-- In Progress -->
         <div class="task-column" id="columnInProgress" data-status="inprogress">
           <div class="task-header">
             <span>In progress</span>
-            <img
-              class="js-add-task-trigger"
-              data-status="inprogress"
-              src="./img/icons/plus button.svg"
-              alt="Add Task" />
           </div>
           <div class="task-cards" id="in-progress-tasks"></div>
         </div>
 
-        <!-- Await Feedback -->
         <div
           class="task-column"
           id="columnAwaitFeedback"
           data-status="await_feedback">
           <div class="task-header">
             <span>Await feedback</span>
-            <img
-              class="js-add-task-trigger"
-              data-status="await_feedback"
-              src="./img/icons/plus button.svg"
-              alt="Add Task" />
           </div>
           <div class="task-cards" id="await-feedback-tasks"></div>
         </div>
 
-        <!-- Done -->
         <div class="task-column" id="columnDone" data-status="done">
           <div class="task-header">
             <span>Done</span>
@@ -101,23 +89,22 @@
       </div>
     </main>
 
-    <!-- Add Task Overlay -->
     <overlay-modal class="overlay-modal">
       <div class="modal-content">
         <div class="overlay-header">
           <h1>Add Task</h1>
-          <!-- Close via data-Attribut (kein onclick mehr) -->
+
           <span data-overlay-close>X</span>
         </div>
 
         <form class="task-form" id="taskForm" novalidate>
-          <!-- Hidden field for status (column) -->
+
           <input type="hidden" name="status" id="taskStatus" value="todo" />
 
           <div class="task-form__layout">
-            <!-- Left column -->
+
             <div class="task-form__column-left">
-              <!-- Title Field -->
+
               <div class="form-group">
                 <label class="form-group__label" for="title">
                   Title <span class="form-group__required">*</span>
@@ -131,7 +118,6 @@
                 <span class="form-group__error" id="titleError"></span>
               </div>
 
-              <!-- Description Field -->
               <div class="form-group">
                 <label class="form-group__label" for="description">
                   Description
@@ -144,7 +130,6 @@
                   rows="4"></textarea>
               </div>
 
-              <!-- Due Date Field -->
               <div class="form-group">
                 <label class="form-group__label" for="dueDate">
                   Due date <span class="form-group__required">*</span>
@@ -165,12 +150,10 @@
               </div>
             </div>
 
-            <!-- Divider -->
             <div class="vertical-divider" aria-hidden="true"></div>
 
-            <!-- Right column -->
             <div class="task-form__column-right">
-              <!-- Priority Selection -->
+
               <div class="form-group">
                 <label class="form-group__label">Priority</label>
                 <div class="priority-buttons">
@@ -247,7 +230,6 @@
                 </div>
               </div>
 
-              <!-- Assigned To -->
               <div class="form-group">
                 <label class="form-group__label" for="assignedToInput">
                   Assigned to
@@ -267,7 +249,6 @@
                 </div>
               </div>
 
-              <!-- Category Field -->
               <div class="form-group">
                 <label class="form-group__label" for="category">
                   Category <span class="form-group__required">*</span>
@@ -286,7 +267,6 @@
                 <span class="form-group__error" id="categoryError"></span>
               </div>
 
-              <!-- Subtasks Field -->
               <div class="form-group">
                 <label class="form-group__label" for="subtaskInput">
                   Subtasks
@@ -313,7 +293,6 @@
                 <ul class="subtask-list" id="subtaskList"></ul>
               </div>
 
-              <!-- BUTTONS: ganz unten in der rechten Spalte -->
               <div class="task-form__column-right-actions">
                 <button
                   type="button"
@@ -354,12 +333,7 @@
         </div>
       </div>
     </overlay-modal>
-<!-- Notification container (füge das z.B. direkt vor deinen scripts ein) -->
 
-
-
-
-    <!-- Task Detail Overlay -->
     <overlay-task-card class="overlay-task-card">
       <div class="task-card-content" id="taskCardContent"></div>
     </overlay-task-card>

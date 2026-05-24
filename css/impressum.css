@@ -24,7 +24,6 @@ body {
   text-decoration: underline;
 }
 
-/* FOOTER SPACING */
 footer {
   margin-left: 280px;
   padding: 40px;
@@ -59,27 +58,24 @@ footer {
 .Datenschutz a:hover {
   text-decoration: underline;
 }
-/* ===== RESPONSIVE ONLY, Desktop remains unchanged ===== */
+
 @media (max-width: 1023px) {
-  /* Hide Sidebar */
+
   .main-sidebar {
     display: none;
   }
 
-  /* Header text no longer indents for Sidebar */
   .marginsidebar {
     margin-left: 0;
   }
 
-  /* Content uses full width below fixed Header */
   .main-content {
-    margin-left: 0; /* no more space for Sidebar */
-    margin-top: 120px; /* maintains spacing from Header */
+    margin-left: 0; 
+    margin-top: 120px; 
     padding: 24px;
     max-width: 100%;
   }
 
-  /* Footer without Sidebar spacing */
   footer {
     margin-left: 0;
     padding: 24px;

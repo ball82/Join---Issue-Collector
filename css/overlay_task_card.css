@@ -1,4 +1,4 @@
-/* Scrollbar behavior for Overlay */
+
 #taskCardContent,
 .overlay-task-card,
 .overlay-task-card-content {
@@ -6,7 +6,6 @@
   overflow: auto;
 }
 
-/* Ensure inner areas don't open their own scrollbars */
 .task-card-header,
 .task-card-body,
 .task-card-footer,
@@ -16,7 +15,6 @@
   position: static;
 }
 
-/* Overlay Task Card Styles */
 .overlay-task-card {
   display: none;
   position: fixed;
@@ -31,12 +29,10 @@
   justify-content: center;
 }
 
-/* Optional: Klasse, falls du statt style.display Klassen nutzen willst */
 .overlay-task-card--open {
   display: flex;
 }
 
-/* Confirmation popup (used for delete confirmations) */
 .confirm-overlay {
   display: none;
   position: fixed;
@@ -113,7 +109,6 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
 
-/* Ensure assigned-to controls inside overlay use full width and inherit spacing */
 .task-card-body .assigned-to-wrapper {
   width: 100%;
   box-sizing: border-box;
@@ -131,7 +126,6 @@
   gap: 8px;
 }
 
-/* ensure wrapper is positioned relative in overlays so toggle sits inside field */
 .task-card-body .assigned-to-wrapper {
   position: relative;
 }
@@ -237,7 +231,6 @@
   font-family: "Inter", sans-serif;
 }
 
-/* Assigned Detail */
 .assigned-list-detail {
   margin-left: 16px;
   display: flex;
@@ -269,7 +262,6 @@
   font-family: "Open Sans", sans-serif;
 }
 
-/* Subtasks Detail */
 .subtask-list-detail {
   list-style: none;
   margin: 8px 0 0;
@@ -317,7 +309,6 @@
   color: #111827;
 }
 
-/* Add-row inside edit overlay for new subtask input */
 .subtask-add-row {
   display: flex;
   gap: 8px;
@@ -341,7 +332,6 @@
   cursor: pointer;
 }
 
-/* Footer-Buttons */
 .task-card-footer {
   display: flex;
   justify-content: flex-end;
@@ -383,7 +373,7 @@
   display: flex;
   justify-content: flex-end;
 }
-/* Edit-Form: scrollbarer Body, fester Footer */
+
 .task-card-edit-form {
   display: flex;
   flex-direction: column;
@@ -416,7 +406,6 @@
   z-index: 10;
 }
 
-/* Mobile */
 @media (max-width: 1023px) {
   .overlay-task-card {
     height: 100vh;

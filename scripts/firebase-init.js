@@ -1,7 +1,4 @@
-/**
- * @fileoverview Firebase initialization module
- * @module firebase-init
- */
+
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
@@ -17,13 +14,10 @@ import {
   remove,
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
-/** @type {Object} */
 const app = initializeApp(window.firebaseConfig);
 
-/** @type {Object} */
 const auth = getAuth(app);
 
-/** @type {Object} */
 const db = getDatabase(app);
 
 window.firebaseApp = app;

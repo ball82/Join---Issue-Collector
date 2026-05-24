@@ -22,16 +22,15 @@
     <nav header-html="./templates/header.html"></nav>
     <aside class="sidebar" sidebar-html="./templates/sidebar.html"></aside>
 
-    <!-- PAGE: Add Task (full page, not a modal) -->
     <main class="task-form-container">
       <h1 class="task-form__title">Add Task</h1>
 
       <form class="task-form" id="taskForm" novalidate>
-        <!-- Hidden field für den Status (wird bei voller Seite immer "todo") -->
+
         <input type="hidden" name="status" id="taskStatus" value="todo" />
 
         <div class="task-form__layout">
-          <!-- Left column -->
+
           <div class="task-form__column-left">
             <div class="form-group">
               <label class="form-group__label" for="title">
@@ -74,12 +73,10 @@
             </div>
           </div>
 
-          <!-- Divider column -->
           <div class="vertical-divider" aria-hidden="true"></div>
 
-          <!-- Right column -->
           <div class="task-form__column-right">
-            <!-- Priority -->
+
             <div class="form-group">
               <label class="form-group__label">Priority</label>
               <div class="priority-buttons">
@@ -118,7 +115,6 @@
               </div>
             </div>
 
-            <!-- Assigned to -->
             <div class="form-group">
               <label class="form-group__label" for="assignedToInput">Assigned to</label>
                 <div class="assigned-to-wrapper">
@@ -136,7 +132,6 @@
               </div>
             </div>
 
-            <!-- Category -->
             <div class="form-group">
               <label class="form-group__label" for="category">
                 Category <span class="form-group__required">*</span>
@@ -152,7 +147,6 @@
               <span class="form-group__error" id="categoryError"></span>
             </div>
 
-            <!-- Subtasks -->
             <div class="form-group">
               <label class="form-group__label" for="subtaskInput">Subtasks</label>
               <div class="subtask-input">
@@ -170,7 +164,6 @@
               <ul class="subtask-list" id="subtaskList"></ul>
             </div>
 
-            <!-- WICHTIG: Buttons exakt wie im Board-Overlay -->
             <div class="task-form__column-right-actions">
               <button
                 type="button"
@@ -203,7 +196,7 @@
         </svg>
         Task created successfully!
       </div>
-<!-- Notification container (füge das z.B. direkt vor deinen scripts ein) -->
+
 <div id="notificationContainer" aria-live="polite" aria-atomic="true" class="notification-container"></div>
 
     </main>

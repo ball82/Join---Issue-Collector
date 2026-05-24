@@ -5,7 +5,7 @@ body {
 }
 
 .main-contact {
-  margin-left: 240px; /* Space for Sidebar */
+  margin-left: 240px; 
   background: #f6f7fb;
   min-height: 100vh;
   max-width: 1680px;
@@ -14,8 +14,6 @@ body {
   background-color: var(--panel, #ffffff);
   overflow-x: hidden;
 }
-
-/* Removed - merged with .contact-list */
 
 .add-contact-button {
   margin-top: 1rem;
@@ -99,7 +97,6 @@ body {
   padding: 0.6rem 0;
 }
 
-/* Scrollbar Styling */
 .contacts-scrollable::-webkit-scrollbar {
   width: 6px;
 }
@@ -397,7 +394,6 @@ span.name-logo {
   display: none;
 }
 
-/* Add Contact Dialog */
 .add-contact-dialog {
   display: none;
   position: fixed;
@@ -639,7 +635,6 @@ position: relative;
   font-size: 24px;
 }
 
-/* Edit Contact Dialog */
 .edit-contact-dialog {
   display: none;
   position: fixed;
@@ -735,7 +730,7 @@ position: relative;
   .add-contact-button {
     display: none;
   }
-  /* Removed .all-contacts - merged with .contact-list */
+
   .contact-list {
     flex: none;
     width: 100%;
@@ -780,11 +775,10 @@ position: relative;
     filter: brightness(0) invert(1);
   }
 
-  /* Add Contact Dialog Mobile */
   .dialog-content {
     flex-direction: column;
     box-sizing: border-box;
-    /* Allow avatar to visually overlap outside the dialog on mobile */
+
     overflow: visible;
   }
 
@@ -963,7 +957,6 @@ position: relative;
   }
 }
 
-/* Contact Success Message */
 .success-message-wrapper {
   display: flex;
   justify-content: center;
@@ -986,7 +979,6 @@ position: relative;
   animation: fadeIn 0.3s ease;
 }
 
-/* Toast Notification */
 .toast-notification {
   position: fixed;
   bottom: 100px;
@@ -1011,7 +1003,6 @@ position: relative;
   visibility: visible;
 }
 
-/* Mobile Contact Detail View */
 .mobile-contact-detail {
   display: none;
   position: fixed;

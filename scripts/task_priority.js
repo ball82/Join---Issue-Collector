@@ -1,17 +1,7 @@
-/**
- * @fileoverview Task priority selection functionality
- * @module task_priority
- */
 
-/**
- * Currently selected priority level
- * @type {string}
- */
+
 let selectedPriority = "Medium";
 
-/**
- * Initializes priority button interactions
- */
 function initPriorityButtons() {
   const buttons = document.querySelectorAll(".priority-buttons__button");
   if (!buttons.length) return;
@@ -20,11 +10,6 @@ function initPriorityButtons() {
   setInitialPriority(buttons);
 }
 
-/**
- * Sets the active priority button
- * @param {NodeList} buttons - All priority buttons
- * @param {HTMLElement} activeButton - The button to activate
- */
 function setPriorityActive(buttons, activeButton) {
   buttons.forEach((button) => {
     button.classList.remove("is-active");
@@ -36,10 +21,6 @@ function setPriorityActive(buttons, activeButton) {
   selectedPriority = activeButton.dataset.priority || "Medium";
 }
 
-/**
- * Sets up click and keyboard handlers for priority buttons
- * @param {NodeList} buttons - All priority buttons
- */
 function setupPriorityButtonInteractions(buttons) {
   buttons.forEach((btn) => {
     btn.setAttribute("role", "button");
@@ -57,10 +38,6 @@ function setupPriorityButtonInteractions(buttons) {
   });
 }
 
-/**
- * Sets the initial/default priority button state
- * @param {NodeList} buttons - All priority buttons
- */
 function setInitialPriority(buttons) {
   let defaultButton = document.querySelector(
     ".priority-buttons__button.priority-buttons__button--active"
@@ -78,9 +55,6 @@ function setInitialPriority(buttons) {
   }
 }
 
-/**
- * Resets priority buttons to default state (Medium)
- */
 function resetPriorityButtons() {
   const buttons = document.querySelectorAll(".priority-buttons__button");
   if (!buttons.length) return;
@@ -89,10 +63,6 @@ function resetPriorityButtons() {
   setInitialPriority(buttons);
 }
 
-/**
- * Gets the currently selected priority
- * @returns {string} The selected priority level
- */
 function getSelectedPriority() {
   return selectedPriority || "Medium";
 }

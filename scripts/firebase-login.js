@@ -1,7 +1,4 @@
-/**
- * @fileoverview Firebase login module with authentication
- * @module firebase-login
- */
+
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import {
@@ -19,13 +16,10 @@ import {
   set,
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
-/** @type {Object} */
 const app = initializeApp(window.firebaseConfig);
 
-/** @type {Object} */
 const auth = getAuth(app);
 
-/** @type {Object} */
 const db = getDatabase(app);
 
 window.firebaseAuth = auth;

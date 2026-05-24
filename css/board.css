@@ -7,7 +7,7 @@ body {
   margin: 0;
   font-family: "Inter", sans-serif;
   font-size: 16px;
-  /* allow page scrolling by default; individual containers keep their own scroll if needed */
+
   overflow: auto;
 }
 
@@ -379,7 +379,7 @@ body {
   background: white;
   display: flex;
   flex-direction: column;
-  overflow: visible; /* allow dropdown to overflow without pushing layout */
+  overflow: visible; 
 }
 
 .assigned-to-selected {
@@ -407,12 +407,11 @@ body {
   order: 1;
 }
 
-/* space for left toggle triangle */
 .assigned-to-wrapper .assigned-to-input {
   padding-right: 48px;
 }
 .assigned-to-dropdown {
-  position: absolute; /* overlay the dropdown instead of reserving space */
+  position: absolute; 
   top: calc(100% + 6px);
   left: 0;
   right: 0;
@@ -422,11 +421,10 @@ body {
   border-radius: 8px;
   max-height: 320px;
   overflow-y: auto;
-  z-index: 2200; /* above overlays */
+  z-index: 2200; 
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-/* toggle triangle on left inside wrapper */
 .assigned-to-toggle {
   position: absolute;
   right: 14px;
@@ -440,7 +438,6 @@ body {
   z-index: 5;
 }
 
-/* draw triangle using pseudo-element so it sits crisply inside the field */
 .assigned-to-toggle::before {
   content: '';
   display: block;
@@ -457,7 +454,6 @@ body {
   transform: rotate(180deg);
 }
 
-/* Category toggle (same style as assigned-to) */
 .category-wrapper {
   position: relative;
   display: flex;
@@ -529,8 +525,6 @@ body {
   color: white !important;
 }
 
-/* Avatar + Name */
-
 .assigned-to-dropdown .contact-info {
   display: flex;
   align-items: center;
@@ -562,8 +556,6 @@ body {
   color: #2a3647;
 }
 
-/* Checkmark Box */
-
 .checkmark-box {
   width: 20px;
   height: 20px;
@@ -589,7 +581,6 @@ body {
   line-height: 1;
 }
 
-/* Native Checkbox invisible */
 .assigned-to-dropdown input[type="checkbox"] {
   position: absolute;
   opacity: 0;
@@ -597,7 +588,6 @@ body {
   height: 0;
 }
 
-/* Example Colors */
 .avatar-sm {
   background: #00bfff;
 }
@@ -614,7 +604,6 @@ body {
   background: #ff69b4;
 }
 
-/* Selected Badges (Assigned Avatars Display) */
 .assigned-to-badge {
   display: flex;
   align-items: center;
@@ -640,7 +629,6 @@ body {
   flex-shrink: 0;
 }
 
-/* Avatar-only variant for selected assignees (no name shown) */
 .assigned-to-badge.avatar-only {
   padding: 0;
   background: transparent;
@@ -668,8 +656,6 @@ body {
   color: #ef4444;
 }
 
-/* ===================== Formular / Add-Task ===================== */
-
 .task-form-container {
   max-width: 1680px;
   margin-left: 240px;
@@ -679,7 +665,6 @@ body {
   box-sizing: border-box;
 }
 
-/* Success Message – initial state hidden */
 .success-message {
   display: none;
   margin-top: 12px;
@@ -689,12 +674,10 @@ body {
   gap: 8px;
 }
 
-/* Hover only for inactive Priority-Buttons */
 .priority-buttons__button:not(.is-active):hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transition: box-shadow 0.2s ease, background-color 0.2s ease;
 }
-
 
 @media (max-width: 1023px) {
   .board-container {
@@ -884,7 +867,6 @@ body {
   display: none;
 }
 
-/* ===== Notification (Index-style) ===== */
 #notification-container {
   position: fixed;
   top: 20px;
@@ -896,7 +878,6 @@ body {
   pointer-events: none;
 }
 
-/* single-row, ellipsis if too long */
 .notification {
   padding: 14px 18px;
   border-radius: 12px;
@@ -940,7 +921,6 @@ body {
   }
 }
 
-/* small-screen adjustments (stack near bottom) */
 @media (max-width: 640px) {
   #notification-container {
     left: 12px;
@@ -958,4 +938,35 @@ body {
 
 .js-add-task-trigger {
   cursor: pointer;
+}
+
+.creator-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.creator-name {
+  font-size: 16px;
+}
+
+.creator-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.creator-badge--internal {
+  background-color: #e3f2ff;
+  color: #1f6fb2;
+}
+
+.creator-badge--external {
+  background-color: #fff0e0;
+  color: #c8631a;
 }

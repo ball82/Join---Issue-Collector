@@ -1,11 +1,10 @@
-/* layout */
+
 main.addtask-wrap {
   margin-left: 240px;
   padding: 196px 84px 32px;
   max-width: 1680px;
 }
 
-/* title row */
 .summary-head {
   margin: 0px 0 48px;
   display: flex;
@@ -25,7 +24,6 @@ main.addtask-wrap {
   color: var(--muted);
 }
 
-/* KPI grid */
 .dashboard {
   display: flex;
   flex-wrap: wrap;
@@ -93,14 +91,13 @@ main.addtask-wrap {
   box-shadow: 0 18px 40px rgba(18, 25, 36, 0.45);
 }
 
-/* Icon-Anpassung beim Hover */
 .kpi-card:hover .kpi-icon {
   color: var(--ink);
   background-color: var(--panel);
 }
 
 .kpi-card:hover .kpi-icon img {
-  /* Dark icon SVG on hover: invert white SVG to dark */
+
   filter: invert(1) brightness(0.9);
   width: 29px;
   height: 29px;
@@ -210,7 +207,6 @@ main.addtask-wrap {
   color: #1f2a3c;
 }
 
-/* greeting on the right */
 .kpi-right {
   right: 40px;
   top: 140px;
@@ -234,7 +230,6 @@ main.addtask-wrap {
   font-size: 64px;
 }
 
-/* Greeting Splash Screen */
 .greeting-splash {
   position: fixed;
   top: 80px;
@@ -307,7 +302,6 @@ body.splash-active .greeting-splash {
   }
 }
 
-/* responsive */
 @media (max-width: 1438px) {
   .kpi-grid {
     grid-template-columns: repeat(3, 260px);

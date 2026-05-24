@@ -1,11 +1,5 @@
-/**
- * @fileoverview Contact dialog functionality for adding and editing contacts
- * @module contacts_dialogs
- */
 
-/**
- * Opens the add contact dialog
- */
+
 function openAddContactDialog() {
   const dialog = document.getElementById("addContactDialog");
   if (dialog) {
@@ -14,9 +8,6 @@ function openAddContactDialog() {
   }
 }
 
-/**
- * Closes the add contact dialog
- */
 function closeAddContactDialog() {
   const dialog = document.getElementById("addContactDialog");
   if (dialog) {
@@ -28,9 +19,6 @@ function closeAddContactDialog() {
   }
 }
 
-/**
- * Opens the edit contact dialog
- */
 function openEditContactDialog() {
   const contact = window.getCurrentContact();
   if (!contact) {
@@ -61,9 +49,6 @@ function openEditContactDialog() {
   document.body.style.overflow = "hidden";
 }
 
-/**
- * Restores mobile contact view after dialog close
- */
 function restoreMobileContactView() {
   const isMobile = window.innerWidth <= 1023;
   if (isMobile) {
@@ -72,9 +57,6 @@ function restoreMobileContactView() {
   }
 }
 
-/**
- * Closes the edit contact dialog
- */
 function closeEditContactDialog() {
   const dialog = document.getElementById("editContactDialog");
   if (dialog) {
@@ -85,18 +67,11 @@ function closeEditContactDialog() {
   restoreMobileContactView();
 }
 
-/**
- * Deletes contact from the edit dialog
- */
 function deleteContactFromDialog() {
   deleteCurrentContact();
   closeEditContactDialog();
 }
 
-/**
- * Deletes the currently selected contact
- * @async
- */
 async function deleteCurrentContact() {
   const contact = window.getCurrentContact();
   if (!contact || !contact.id) {
@@ -123,13 +98,6 @@ async function deleteCurrentContact() {
   }
 }
 
-/**
- * Selects a newly added contact
- * @param {string} id - Contact ID
- * @param {string} name - Contact name
- * @param {string} email - Contact email
- * @param {string} phone - Contact phone
- */
 function selectNewlyAddedContact(id, name, email, phone) {
   const contact = { id, name, email, phone };
   const isMobile = window.innerWidth <= 1023;
@@ -153,10 +121,6 @@ function selectNewlyAddedContact(id, name, email, phone) {
   }
 }
 
-/**
- * Shows a success message in the info area
- * @param {string} message - The success message
- */
 function showSuccessMessage(message) {
   const infoArea = document.querySelector(".info-contact-area");
   if (!infoArea) return;
@@ -176,12 +140,6 @@ function showSuccessMessage(message) {
   }, 2000);
 }
 
-/**
- * Shows a validation error on an input field
- * @param {string} inputId - Input element ID
- * @param {string} errorId - Error element ID
- * @param {string} message - Error message
- */
 function showValidationError(inputId, errorId, message) {
   const input = document.getElementById(inputId);
   const error = document.getElementById(errorId);
@@ -197,10 +155,6 @@ function showValidationError(inputId, errorId, message) {
   }
 }
 
-/**
- * Clears all validation errors for a form type
- * @param {string} formType - Form type ("add" or "edit")
- */
 function clearValidationErrors(formType) {
   if (formType === "add") {
     clearFieldError("newContactName", "errorContactName");
@@ -213,11 +167,6 @@ function clearValidationErrors(formType) {
   }
 }
 
-/**
- * Clears error state from a field
- * @param {string} inputId - Input element ID
- * @param {string} errorId - Error element ID
- */
 function clearFieldError(inputId, errorId) {
   const input = document.getElementById(inputId);
   const error = document.getElementById(errorId);

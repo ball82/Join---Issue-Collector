@@ -1,4 +1,4 @@
-<!-- index.html (updated) -->
+
 <!DOCTYPE html>
 <html lang="de">
 
@@ -9,46 +9,60 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link rel="icon" href="img/logo/Logo for Favicon construction.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/welcome_overlay.css" />
   <link rel="stylesheet" href="css/indexstyle.css" />
-  <style>
-    * {
-      font-family: "Inter", sans-serif;
-    }
 
-    /* Inline overrides for form message styling */
-    .form-message {
-      box-sizing: border-box;
-      padding: 12px 14px;
-      border-radius: 10px;
-      margin-bottom: 16px;
-      font-weight: 600;
-      font-family: "Inter", sans-serif;
-      font-size: 15px;
-      display: none;
-    }
-
-    .form-message.error {
-      background-color: #ffecec;
-      color: #b00020;
-      border: 1px solid rgba(176, 0, 32, 0.12);
-    }
-
-    .form-message.success {
-      background-color: #e9f9ee;
-      color: #1f7a3a;
-      border: 1px solid rgba(31, 122, 58, 0.12);
-    }
-
-    .input-error {
-      border-color: #b00020 !important;
-      box-shadow: 0 0 0 4px rgba(176, 0, 32, 0.04);
-    }
-  </style>
 </head>
 
 <body>
   <div id="intro-screen">
     <img src="img/logo/Logo for Favicon construction.svg" alt="Join Logo" />
+  </div>
+
+   <div id="welcome-overlay" class="welcome-overlay" role="dialog" aria-modal="true"
+    aria-labelledby="welcome-title" hidden>
+    <div class="welcome-card">
+      <h2 id="welcome-title" class="welcome-card__title">Welcome</h2>
+      <div class="welcome-card__line"></div>
+
+      <p class="welcome-card__lead">
+        Pick the option that suits your role: create a request as a
+        stakeholder or log in if you're part of the team.
+      </p>
+
+      <div class="welcome-card__choices">
+        <div class="welcome-choice">
+          <p class="welcome-choice__label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#29abe2" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="7" width="20" height="14" rx="2" />
+              <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </svg>
+            Are you a stakeholder?
+          </p>
+          <a class="welcome-btn welcome-btn--primary" href="landing.html">
+            Create request
+          </a>
+        </div>
+
+        <div class="welcome-choice">
+          <p class="welcome-choice__label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#29abe2" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            Are you a team member?
+          </p>
+          <button type="button" class="welcome-btn welcome-btn--ghost"
+            id="welcome-member-login">
+            Member log in
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <header>
@@ -124,13 +138,12 @@
         <a href="privacypolicy.html" target="_blank">Privacy Policy</a>
       </label>
 
-      <button type="submit" class="dark-button inactive" <!-- class "inactive" initial für Optik --
+      <button type="submit" class="dark-button inactive" class="inactive" initial für Optik
         id="signup-submit-btn"
         aria-label="Create new account"
         >
         Sign up
       </button>
-
 
       </div>
     </form>
@@ -150,6 +163,7 @@
   <script type="module" src="scripts/firebase-login.js"></script>
   <script src="scripts/index_ui.js"></script>
   <script src="scripts/register.js"></script>
+  <script src="scripts/welcome_overlay.js"></script>
 
   <div id="notification-container"></div>
 </body>

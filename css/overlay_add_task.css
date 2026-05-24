@@ -1,4 +1,4 @@
-/* Overlay Modal Styles */
+
 overlay-modal {
   position: fixed;
   top: 0;
@@ -54,7 +54,7 @@ overlay-modal {
 
 .task-form__column-left {
   padding-right: 24px;
-  
+
 }
 
 .task-form__column-right {
@@ -135,7 +135,6 @@ overlay-modal {
   display: block;
 }
 
-/* Priority Buttons */
 .priority-buttons {
   display: flex;
   justify-content: space-between;
@@ -180,7 +179,6 @@ overlay-modal {
   color: #7ae229;
 }
 
-/* Active state */
 .priority-buttons__button.is-active,
 .priority-buttons__button[aria-pressed="true"] {
   color: #ffffff;
@@ -202,7 +200,6 @@ overlay-modal {
   background-color: #5be84a;
 }
 
-/* Subtasks */
 .subtask-input {
   display: flex;
   align-items: center;
@@ -243,9 +240,9 @@ overlay-modal {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  max-height: 264px; /* show up to ~5 items then scroll */
+  max-height: 264px; 
   overflow-y: auto;
-  padding-right: 6px; /* room for scrollbar */
+  padding-right: 6px; 
 }
 
 .subtask-item {
@@ -294,7 +291,6 @@ overlay-modal {
   color: #ef4444;
 }
 
-/* Subtasks */
 .subtask-input {
   display: flex;
   align-items: center;
@@ -330,9 +326,9 @@ overlay-modal {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  max-height: 264px; /* show up to ~5 items then scroll */
+  max-height: 264px; 
   overflow-y: auto;
-  padding-right: 6px; /* room for scrollbar */
+  padding-right: 6px; 
 }
 
 .subtask-remove-btn {
@@ -343,7 +339,6 @@ overlay-modal {
   cursor: pointer;
 }
 
-/* Form Actions */
 .form-actions {
     display: grid;
     grid-template-columns: 1fr 1px 1fr;
@@ -360,7 +355,6 @@ overlay-modal {
   width: 44%;
   max-width: 440px;
 }
-
 
 .form-actions__button {
   padding: 8px 16px;
@@ -390,12 +384,11 @@ overlay-modal {
   border-radius: 8px;
 }
 
-/* Buttons in einer Reihe, unten angeklebt */
 .task-form__column-right-actions {
   display: flex;
   gap: 12px;
-  justify-content: flex-end; /* rechtsbündig; benutze center oder space-between falls gewünscht */
-  margin-top: auto; /* schiebt die Buttons an das Ende der Spalte */
+  justify-content: flex-end; 
+  margin-top: auto; 
   padding-top: 18px;
 }
 
@@ -407,7 +400,6 @@ overlay-modal {
     row-gap: 24px;
     align-items: start;
   }
-
 
   .vertical-divider {
     display: none !important;
@@ -422,7 +414,6 @@ overlay-modal {
     box-sizing: border-box;
   }
 
-  /* Default: hide (for custom element and class) */
   overlay-modal,
   .overlay-modal {
     height: 100vh;
@@ -432,7 +423,6 @@ overlay-modal {
     margin-right: 12px;
   }
 
-  /* sichtbar nur wenn .open gesetzt ist */
   overlay-modal.open,
   .overlay-modal.open {
     display: flex;

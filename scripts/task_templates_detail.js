@@ -1,21 +1,22 @@
-/**
- * @fileoverview Task detail card templates for overlay view and edit
- * @module task_templates_detail
- */
 
-/**
- * Generates HTML template for task card content view
- * @param {Object} task - The task object
- * @param {string} task.id - Task ID
- * @param {string} task.category - Task category
- * @param {string} task.title - Task title
- * @param {string} task.description - Task description
- * @param {string} task.dueDate - Task due date
- * @param {string} task.priority - Task priority
- * @param {Array} task.assignedTo - Assigned users
- * @param {Array} task.subtasks - Subtasks array
- * @returns {string} HTML string for task card content
- */
+
+function renderCreatorDetail(creator) {
+  const data = creator && typeof creator === "object" ? creator : {};
+  const isExternal = data.type === "external";
+  const badgeClass = isExternal ? "creator-badge--external" : "creator-badge--internal";
+  const badgeLabel = isExternal ? "External" : "Internal";
+
+  const name = data.name ? escapeHtml(data.name) : "";
+  const email = data.email ? escapeHtml(data.email) : "";
+  const primary = name || email || "Unknown";
+  const secondary = name && email ? ` &lt;${email}&gt;` : "";
+
+  return (
+    `<span class="creator-name">${primary}${secondary}</span>` +
+    `<span class="creator-badge ${badgeClass}">${badgeLabel}</span>`
+  );
+}
+
 function taskCardContentTemplate(task) {
   const dueDate = task.dueDate || "-";
   const cat = task.category || "Category";
@@ -43,6 +44,10 @@ function taskCardContentTemplate(task) {
             <span class="prio-text">${normalizePriority(task.priority)}</span>
             ${priorityIcon(task.priority)}
           </td>
+        </tr>
+        <tr>
+          <td><strong>Created by:</strong></td>
+          <td class="creator-cell">${renderCreatorDetail(task.creator)}</td>
         </tr>
       </table>
 
@@ -75,18 +80,6 @@ function taskCardContentTemplate(task) {
     </div>`;
 }
 
-/**
- * Generates HTML template for task card edit form
- * @param {Object} task - The task object
- * @param {string} task.id - Task ID
- * @param {string} task.category - Task category
- * @param {string} task.title - Task title
- * @param {string} task.description - Task description
- * @param {string} task.dueDate - Task due date
- * @param {string} task.priority - Task priority
- * @param {Array} task.subtasks - Subtasks array
- * @returns {string} HTML string for task card edit form
- */
 function taskCardEditTemplate(task) {
   const priority = (task.priority || "medium").toLowerCase();
   const dueDate = task.dueDate || "";
@@ -227,11 +220,6 @@ function taskCardEditTemplate(task) {
   `;
 }
 
-/**
- * Renders detailed assignee list with avatars and names
- * @param {Array} list - Array of assignee objects or strings
- * @returns {string} HTML string for assignee list
- */
 function renderAssigneesDetail(list) {
   if (!list || !list.length) {
     return '<span class="assigned-name">No assignees</span>';
@@ -263,12 +251,6 @@ function renderAssigneesDetail(list) {
     .join("");
 }
 
-/**
- * Renders detailed subtask list with checkboxes
- * @param {Array} list - Array of subtask objects
- * @param {string} taskId - The parent task ID
- * @returns {string} HTML string for subtask list
- */
 function renderSubtasksDetail(list, taskId) {
   if (!list || !list.length) {
     return '<li class="subtask-item"><span class="subtask-title">No subtasks</span></li>';

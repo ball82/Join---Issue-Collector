@@ -1,9 +1,8 @@
-/* Brand Name Styling */
+
 .brand-name {
   color: #29abe2;
 }
 
-/* Step Container with indentation */
 .step-container {
   display: flex;
   gap: 16px;

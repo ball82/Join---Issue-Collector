@@ -1,11 +1,5 @@
-/**
- * @fileoverview Index page UI functionality
- * @module index_ui
- */
 
-/**
- * Initializes password visibility toggle
- */
+
 function initPasswordToggle() {
   const togglePassword = document.getElementById("toggle-password");
   const passwordInput = document.getElementById("password");
@@ -18,9 +12,6 @@ function initPasswordToggle() {
   }
 }
 
-/**
- * Initializes form toggle between login and signup
- */
 function initFormToggle() {
   const toggleForm = document.getElementById("toggle-form");
   const toggleForm2 = document.getElementById("toggle-form-2");
@@ -30,9 +21,6 @@ function initFormToggle() {
   const signupBtns = document.querySelectorAll(".signup-btn");
   const backArrow = document.getElementById("back-to-login");
 
-  /**
-   * Toggles between login and signup forms
-   */
   function toggleForms() {
     const isLogin = loginForm.classList.contains("active");
     const from = isLogin ? loginForm : signupForm;
@@ -65,9 +53,6 @@ function initFormToggle() {
   }
 }
 
-/**
- * Initializes the intro animation
- */
 function initIntroAnimation() {
   window.addEventListener("load", () => {
     const intro = document.getElementById("intro-screen");
@@ -101,9 +86,6 @@ function initIntroAnimation() {
       startFlyAnimation();
     }
 
-    /**
-     * Starts the logo fly animation
-     */
     function startFlyAnimation() {
       const holdMs = 150,
         flyMs = 1200,

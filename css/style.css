@@ -1,7 +1,7 @@
 * {
   margin: 0;
   padding: 0;
-  /* box-sizing: border-box; */
+
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -11,7 +11,7 @@
 input::placeholder,
 textarea::placeholder {
   color: var(--placeholder-color);
-  opacity: 1; /* Firefox reduces opacity by default */
+  opacity: 1; 
 }
 
 html {
@@ -79,7 +79,6 @@ h3 {
   font-size: 30px;
 }
 
-/* Utility-Klassen */
 .flex {
   display: flex;
 }
@@ -104,7 +103,6 @@ h3 {
   gap: 16px;
 }
 
-/* Container & Layout */
 .container {
   width: 100%;
   max-width: 1020px;
@@ -112,30 +110,23 @@ h3 {
   padding: 0 16px;
 }
 
-/* ========================================
-   FORM ELEMENTS RESET
-   ======================================== */
-
 input,
 textarea,
 select,
 button {
-  /* Entfernt alle Browser-Defaults */
+
   all: unset;
   box-sizing: border-box;
 
-  /* Basis-Styles */
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
   color: inherit;
 
-  /* Display */
   display: block;
   width: 100%;
 }
 
-/* Input and Textarea specific */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -166,7 +157,6 @@ select:focus {
   box-shadow: 0 0 0 3px rgba(41, 171, 226, 0.1);
 }
 
-/* Buttons */
 button {
   cursor: pointer;
   display: inline-flex;

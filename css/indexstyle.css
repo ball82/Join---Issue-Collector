@@ -1,4 +1,4 @@
-/* === HEADER === */
+
 header {
   position: relative;
   width: 100%;
@@ -29,7 +29,6 @@ header {
   font-family: "Inter", sans-serif;
 }
 
-/* — compact & taller Header Button — */
 .signup-btn {
   background-color: #2a3647;
   color: white;
@@ -48,7 +47,6 @@ header {
   box-shadow: 0 0 16px rgba(95, 192, 234, 0.8);
 }
 
-/* === BODY / MAIN === */
 body {
   margin: 0;
   background-color: #ffffff;
@@ -95,7 +93,6 @@ h1 {
   margin-bottom: 32px;
 }
 
-/* === INPUTS === */
 .input-group {
   position: relative;
   width: 100%;
@@ -105,7 +102,7 @@ h1 {
 .input-group input::placeholder {
   color: #d1d1d1;
   opacity: 1;
-  /* important, so browser doesn't apply transparency */
+
 }
 
 .input-group input {
@@ -131,7 +128,6 @@ h1 {
   cursor: pointer;
 }
 
-/* === PRIVACY ACCEPT FIELD === */
 .privacy-accept {
   display: flex;
   align-items: center;
@@ -147,7 +143,7 @@ h1 {
   height: 16px;
   cursor: pointer;
   accent-color: #29abe2;
-  /* modern color for Checkbox */
+
 }
 
 .privacy-accept a {
@@ -159,7 +155,6 @@ h1 {
   text-decoration: underline;
 }
 
-/* === BUTTONS === */
 .button-group {
   display: flex;
   flex-wrap: wrap;
@@ -202,7 +197,6 @@ button:not(.dark-button):hover {
   box-shadow: 0 0 12px rgba(95, 192, 234, 0.5);
 }
 
-/* === FOOTER === */
 .footer-links {
   font-size: 16px;
   display: flex;
@@ -225,7 +219,6 @@ button:not(.dark-button):hover {
   color: #5fc0ea;
 }
 
-/* === FORM TOGGLE ANIMATION === */
 .form-section {
   transition: opacity 0.4s ease, transform 0.3s ease;
 }
@@ -242,7 +235,6 @@ button:not(.dark-button):hover {
   transform: translateY(0);
 }
 
-/* === RESPONSIVE DESIGN === */
 @media (max-width: 480px) {
   #signup-top {
     display: none;
@@ -309,7 +301,6 @@ button:not(.dark-button):hover {
   }
 }
 
-/* === SIGN-UP HEADER (with arrow) === */
 .signup-header {
   display: flex;
   align-items: center;
@@ -358,8 +349,6 @@ button:not(.dark-button):hover {
   width: 0;
 }
 
-
-/* === CUSTOM ICONS IN INPUT FIELDS === */
 .input-group {
   position: relative;
   width: 100%;
@@ -369,7 +358,7 @@ button:not(.dark-button):hover {
 .input-group input {
   width: 100%;
   padding: 12px 40px 12px 12px;
-  /* space on the right for icon */
+
   font-size: 16px;
   border: 1px solid #d1d1d1;
   border-radius: 8px;
@@ -381,7 +370,6 @@ button:not(.dark-button):hover {
   border-color: #29abe2;
 }
 
-/* Position icons on the right side of the field */
 .input-group img.icon-email,
 .input-group img.icon-lock {
   position: absolute;
@@ -389,10 +377,10 @@ button:not(.dark-button):hover {
   top: 50%;
   transform: translateY(-50%);
   width: 22px;
-  /* Size can be adjusted */
+
   height: 22px;
   pointer-events: none;
-  /* prevents the icon from blocking clicks */
+
   opacity: 0.7;
 }
 
@@ -404,13 +392,11 @@ button:not(.dark-button):hover {
   filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
 
-/* If you want a slight effect on hover or focus */
 .input-group input:focus+img {
   opacity: 1;
   filter: none;
 }
 
-/* === ICONS IN INPUT (COMPLEMENTED WITH PERSON) === */
 .input-group img.icon-person,
 .input-group img.icon-mail,
 .input-group img.icon-lock {
@@ -425,13 +411,11 @@ button:not(.dark-button):hover {
   filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
 
-/* Effect on focus */
 .input-group input:focus+img {
   opacity: 1;
   filter: none;
 }
 
-/* === STARTANIMATION === */
 #intro-screen {
   position: fixed;
   top: 0;
@@ -444,17 +428,16 @@ button:not(.dark-button):hover {
   justify-content: center;
   z-index: 9999;
   transition: opacity 0.8s ease, background-color 0.5s ease;
-  /* smoother transition for BG */
+
 }
 
 #intro-screen img {
   width: 220px;
   height: auto;
   transition: opacity 0.3s ease, filter 0.5s ease;
-  /* for smoother logo transition */
+
 }
 
-/* Logo flies diagonally to top left */
 @keyframes logo-move {
   0% {
     transform: scale(1) translate(0, 0);
@@ -473,7 +456,6 @@ body.loaded .join-logo {
   visibility: visible;
 }
 
-/* Body invisible until animation ends */
 body.loaded main,
 body.loaded header,
 body.loaded .footer-links,
@@ -489,18 +471,16 @@ header,
   transition: opacity 0.9s ease;
 }
 
-/* === INTRO-SCREEN RESPONSIVE === */
 #intro-screen img {
   width: 220px;
   height: auto;
   transition: width 0.3s ease;
 }
 
-/* On mobile: smaller start logo + initially dark BG */
 @media (max-width: 480px) {
   #intro-screen {
     background-color: #2a3647;
-    /* Initially dark to avoid white flash */
+
   }
 
   #intro-screen img {
@@ -508,7 +488,6 @@ header,
   }
 }
 
-/* 🔔 Notification Styling */
 #notification-container {
   position: fixed;
   top: 20px;
@@ -532,12 +511,12 @@ header,
 
 .notification.success {
   background-color: #28a745;
-  /* green */
+
 }
 
 .notification.error {
   background-color: #dc3545;
-  /* rot */
+
 }
 
 @keyframes fadeInOut {
