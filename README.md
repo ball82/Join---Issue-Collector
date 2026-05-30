@@ -4,8 +4,6 @@ Eine moderne, responsive Task-Management-Anwendung auf Basis von Vanilla JavaScr
 
 Das Projekt wurde um einen **KI-gestützten Issue Collector** erweitert: Stakeholder können Feature Requests und Bug-Meldungen per E-Mail einreichen. Die KI analysiert jede E-Mail automatisch, bestimmt Kategorie, Priorität und Deadline und legt das Ticket direkt im Board an.
 
-![Join Logo](img/logo/join-logo.svg)
-
 ---
 
 ## Inhaltsverzeichnis
