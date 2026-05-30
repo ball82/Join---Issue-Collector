@@ -5,7 +5,7 @@ body {
 }
 
 .main-contact {
-  margin-left: 240px; 
+  margin-left: 240px;
   background: #f6f7fb;
   min-height: 100vh;
   max-width: 1680px;
@@ -40,6 +40,7 @@ body {
   background-color: #29abe2;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
+
 .add-icon {
   width: 1.6rem;
   height: 1.6rem;
@@ -69,6 +70,7 @@ body {
   border-top: 1px solid #d1d1d1;
   width: 100%;
 }
+
 .contact-list {
   flex: 0 0 320px;
   text-align: center;
@@ -113,6 +115,7 @@ body {
 .contacts-scrollable::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.3);
 }
+
 .contact-item {
   display: flex;
   align-items: center;
@@ -125,6 +128,7 @@ body {
   overflow: hidden;
   width: 100%;
 }
+
 .name-logo {
   width: 42px;
   height: 42px;
@@ -176,6 +180,7 @@ span.name-logo {
   white-space: nowrap;
   max-width: 100%;
 }
+
 .user-email {
   font-size: 16px;
   color: var(--email);
@@ -198,6 +203,7 @@ span.name-logo {
   align-content: flex-start;
   flex-wrap: wrap;
 }
+
 .info-contact-header {
   display: flex;
   flex-direction: row;
@@ -205,6 +211,7 @@ span.name-logo {
   align-items: center;
   margin-bottom: 1rem;
 }
+
 .info-contact-area h2 {
   font-weight: 700;
   font-size: 61px;
@@ -212,6 +219,7 @@ span.name-logo {
   padding-right: 1rem;
   border-right: var(--accent) 3px solid;
 }
+
 .slogan {
   font-size: 27px;
   font-weight: 400;
@@ -220,6 +228,7 @@ span.name-logo {
   font-size: 2rem;
   color: #2a3647;
 }
+
 .user-infos {
   display: flex;
   align-items: center;
@@ -227,6 +236,7 @@ span.name-logo {
   flex-direction: row;
   flex-wrap: wrap;
 }
+
 .name-logo-large {
   height: 120px;
   width: 120px;
@@ -240,6 +250,7 @@ span.name-logo {
   justify-content: center;
   margin-right: 1rem;
 }
+
 .user-details-large {
   margin-left: 2rem;
   display: flex;
@@ -247,6 +258,7 @@ span.name-logo {
   max-width: calc(100% - 140px);
   overflow-wrap: break-word;
 }
+
 .name-large {
   font-size: 47px;
   font-weight: 500;
@@ -254,23 +266,28 @@ span.name-logo {
   word-break: break-word;
   overflow-wrap: break-word;
 }
+
 .edit-area {
   margin-top: 1rem;
   display: flex;
   gap: 2rem;
 }
+
 .edit-area span {
   cursor: pointer;
 }
+
 .edit-area .edit-button {
   cursor: pointer;
 }
+
 .edit-elements span {
   width: 16px;
   height: 16px;
   margin-right: 0.8rem;
   text-align: center;
 }
+
 .edit-area img {
   margin-right: 0.6rem;
   height: 18px;
@@ -285,12 +302,14 @@ span.name-logo {
   margin-bottom: 20px;
   padding-bottom: 1rem;
 }
+
 .para-2 {
   font-size: 16px;
   font-weight: 700;
   font-style: bold;
   margin-bottom: 1rem;
 }
+
 .para-3 {
   color: var(--email);
   font-size: 16px;
@@ -325,22 +344,26 @@ span.name-logo {
   box-sizing: border-box;
   align-items: flex-start;
 }
+
 .left-section img {
   width: 20%;
   height: auto;
 }
+
 .left-section p {
   color: white;
   font-size: 61px;
   font-weight: bold;
   margin-bottom: 1rem;
 }
+
 .left-section hr {
   width: 20%;
   border: 0.5px solid var(--accent);
   margin: 0;
   margin-right: auto;
 }
+
 .right-section {
   height: 100%;
   display: flex;
@@ -352,6 +375,7 @@ span.name-logo {
   align-content: center;
   justify-content: space-between;
 }
+
 .name-logo-etition {
   width: 120px;
   height: 120px;
@@ -364,11 +388,13 @@ span.name-logo {
   justify-content: center;
   margin-bottom: 1rem;
 }
+
 .edit-contact {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
 .contact-edit-form {
   display: flex;
   width: 15rem;
@@ -381,6 +407,7 @@ span.name-logo {
   display: flex;
   gap: 1rem;
 }
+
 .contact-edit-save-cancel button {
   padding: 10px 20px;
   font-size: 1rem;
@@ -408,7 +435,7 @@ span.name-logo {
 
 .add-contact-dialog.active {
   display: flex;
-  flex-direction: column;    
+  flex-direction: column;
   align-content: center;
   align-items: center;
 }
@@ -424,7 +451,7 @@ span.name-logo {
 }
 
 .dialog-content {
-position: relative;
+  position: relative;
   z-index: 1002;
   background: white;
   border-radius: 30px;
@@ -437,6 +464,7 @@ position: relative;
   align-content: center;
   align-items: center;
 }
+
 .dialog-close {
   position: absolute;
   top: 30px;
@@ -508,7 +536,7 @@ position: relative;
   align-items: center;
 }
 
-.dialog-avatar {  
+.dialog-avatar {
   margin-right: 2rem;
   border-radius: 50%;
   background-color: #d1d1d1;
@@ -706,16 +734,7 @@ position: relative;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
-@media (max-width: 1023px) {
-  body {
-    overflow: hidden;
-  }
-  .info-contact-header {
-    display: none;
-  }
-  .info-contact-area {
-    display: none;
-  }
+@media (max-width: 1310px) {
   .main-contact {
     padding: 0px;
     margin-left: 0;
@@ -727,6 +746,22 @@ position: relative;
     position: relative;
     z-index: 1;
   }
+
+}
+
+@media (max-width: 1023px) {
+  body {
+    overflow: hidden;
+  }
+
+  .info-contact-header {
+    display: none;
+  }
+
+  .info-contact-area {
+    display: none;
+  }
+
   .add-contact-button {
     display: none;
   }
@@ -745,6 +780,7 @@ position: relative;
     overflow: visible;
     max-height: none;
   }
+
   .contact-item {
     align-items: center;
     cursor: pointer;
@@ -1214,6 +1250,7 @@ position: relative;
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
