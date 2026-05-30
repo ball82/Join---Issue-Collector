@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Documentation output
+out/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Firebase
+.firebase/
+firebase-debug.log
+.firebaserc
+
+# Firebase config (if using environment-specific configs)
+scripts/config.prod.js
+scripts/config.local.js
+
+# Backup files
+*_old_backup.js
+*_backup.js
+
+# Issue Collector — n8n & secrets
+# n8n encryption key and all credentials stay local, never commit
+.n8n/
+n8n_data/
+*.env
+N8N_ENCRYPTION_KEY
+
+# SMTP / IMAP passwords and API keys
+# (stored only in n8n credentials, not in exported workflow JSONs)
+scripts/config.js
