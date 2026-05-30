@@ -249,8 +249,7 @@ Join---Issue-Collector/
 
 Dieses Projekt wurde entwickelt von:
 
-- **Joannis Ballos** – Entwickler (Issue Collector, n8n-Integration, Board-Erweiterungen)
-- **Raphael Neuberger** – Entwickler (ursprüngliches Join-Kanban-Board)
+- **Joannis Ballos** – Entwickler
 
 ---
 
