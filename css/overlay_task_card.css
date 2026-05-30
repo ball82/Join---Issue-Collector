@@ -150,6 +150,19 @@
   margin-bottom: 24px;
 }
 
+.task-card-header-labels {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 145px;
+}
+
+.ki-generated-badge {
+  display: block;
+  height: 22px;
+  width: auto;
+}
+
 .task-card-category {
   padding: 4px 24px;
   border-radius: 8px;
@@ -413,6 +426,9 @@
     align-items: center;
     justify-content: center;
   }
+  .task-card-header-labels {
+    gap: 45px;
+}
 
   .task-card-body table {
     width: 100%;
@@ -429,5 +445,16 @@
     margin: 0;
     border-radius: 12px;
     box-sizing: border-box;
-  }
+  }  
+}
+
+@media (max-width: 545px) {
+
+
+.task-card-header-labels {
+    flex-direction: column;
+}
+
+
+
 }

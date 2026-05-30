@@ -47,10 +47,18 @@ function taskCardContentTemplate(task) {
   const dueDate = task.dueDate || "-";
   const cat = task.category || "Category";
 
+  const showKiBadge = task.isAiGenerated || (task.creator && task.creator.type === "external");
+  const kiLabel = showKiBadge
+    ? `<img src="./img/icons/Note _ KI generiert.svg" class="ki-generated-badge" alt="KI generiert">`
+    : "";
+
   return `
     <div class="task-card-header">
       <div class="task-card-header-category-close">
-        <div class="task-card-category">${escapeHtml(cat)}</div>
+        <div class="task-card-header-labels">
+          ${kiLabel}
+          <div class="task-card-category">${escapeHtml(cat)}</div>
+        </div>
         <span class="task-card-close" onclick="closeTaskCard()">X</span>
       </div>
       <h2>${escapeHtml(task.title || "")}</h2>

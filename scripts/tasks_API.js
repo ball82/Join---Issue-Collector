@@ -125,6 +125,7 @@ function enrichTask(task) {
     subtasks,
     status,
     creator: normalizeCreator(task.creator),
+    isAiGenerated: !!task.isAiGenerated,
   };
 }
 
