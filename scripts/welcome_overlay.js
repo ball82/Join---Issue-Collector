@@ -23,7 +23,7 @@ function openWelcomeOverlay() {
 
 function initWelcomeOverlay() {
   if (isUserLoggedIn()) {
-    closeWelcomeOverlay();
+    window.location.replace("summary.html");
     return;
   }
 
