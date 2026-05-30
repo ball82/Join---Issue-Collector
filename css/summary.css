@@ -340,21 +340,35 @@ body.splash-active .greeting-splash {
   }
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1310px) {
   main.addtask-wrap {
     padding: 96px 20px 20px;
     margin-left: 0;
     margin-bottom: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .kpi-right {
     display: none;
   }
 
+  .dashboard {
+    justify-content: center;
+  }
+
+  .kpi-left {
+    width: 100%;
+    max-width: 600px;
+    align-items: center;
+  }
+
   .summary-head {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     margin-bottom: 32px;
   }
 

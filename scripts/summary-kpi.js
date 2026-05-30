@@ -38,6 +38,7 @@
     updateElement("kpi-progress", counts.progress);
     updateElement("kpi-feedback", counts.feedback);
     updateElement("kpi-board", counts.total);
+    updateElement("kpi-email", counts.email);
   }
 
   function updateKPIs(tasks) {
@@ -53,6 +54,7 @@
       ),
       urgent: filterByPriority(tasks, "urgent").length,
       total: tasks.length,
+      email: tasks.filter((t) => t.creator && t.creator.type === "external").length,
     };
 
     updateAllKPIElements(counts);

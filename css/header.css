@@ -99,7 +99,7 @@ header {
   height: 25px;
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1310px) {
   header {
     position: fixed;
     top: 0;

@@ -130,7 +130,7 @@ body.logged-out .nav-guest {
   flex-direction: column;
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1310px) {
   .sidebar {
     position: fixed;
     bottom: 0;
