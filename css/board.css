@@ -385,7 +385,7 @@ body {
   background: white;
   display: flex;
   flex-direction: column;
-  overflow: visible; 
+  overflow: visible;
 }
 
 .assigned-to-selected {
@@ -417,7 +417,7 @@ body {
   padding-right: 48px;
 }
 .assigned-to-dropdown {
-  position: absolute; 
+  position: absolute;
   top: calc(100% + 6px);
   left: 0;
   right: 0;
@@ -427,7 +427,7 @@ body {
   border-radius: 8px;
   max-height: 320px;
   overflow-y: auto;
-  z-index: 2200; 
+  z-index: 2200;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
@@ -688,7 +688,7 @@ body {
 @media (max-width: 1310px) {
   .board-container {
     width: 95vw;
-    margin-top: 100px; 
+    margin-top: 100px;
     margin-left: 0;
     padding: 15px;
     padding-right: 0px;
@@ -895,19 +895,19 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  white-space: nowrap;      
-  overflow: hidden;    
-  text-overflow: ellipsis;     
-  max-width: 480px;            
-  pointer-events: auto;        
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 480px;
+  pointer-events: auto;
 }
 
 .notification.success {
-  background-color: #28a745; 
+  background-color: #28a745;
 }
 
 .notification.error {
-  background-color: #dc3545; 
+  background-color: #dc3545;
 }
 
 @keyframes fadeInOut {

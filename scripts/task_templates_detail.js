@@ -1,13 +1,8 @@
-/**
- * @fileoverview Task detail card templates for overlay view and edit
- * @module task_templates_detail
- */
 
 /**
- * Renders the creator information for the task detail overlay, including a
- * badge that distinguishes internal team members from external stakeholders.
- * @param {{name: string, email: string, type: string}} [creator] - Creator data
- * @returns {string} HTML string showing the creator and an internal/external badge
+ * Returns HTML markup for the creator cell in the task detail overlay.
+ * @param {{ name?: string, email?: string, type?: string }|undefined} creator
+ * @returns {string} HTML string with name and internal/external badge.
  */
 function renderCreatorDetail(creator) {
   const data = creator && typeof creator === "object" ? creator : {};
@@ -18,8 +13,6 @@ function renderCreatorDetail(creator) {
   const name = data.name ? escapeHtml(data.name) : "";
   const email = data.email ? escapeHtml(data.email) : "";
 
-  // External tickets: show the email address (cleaner than the raw sender name).
-  // Internal tickets: show the user's name.
   const primary = isExternal
     ? (email || name || "Unknown")
     : (name || email || "Unknown");
@@ -31,17 +24,9 @@ function renderCreatorDetail(creator) {
 }
 
 /**
- * Generates HTML template for task card content view
- * @param {Object} task - The task object
- * @param {string} task.id - Task ID
- * @param {string} task.category - Task category
- * @param {string} task.title - Task title
- * @param {string} task.description - Task description
- * @param {string} task.dueDate - Task due date
- * @param {string} task.priority - Task priority
- * @param {Array} task.assignedTo - Assigned users
- * @param {Array} task.subtasks - Subtasks array
- * @returns {string} HTML string for task card content
+ * Returns the full HTML for the read-only task detail overlay.
+ * @param {object} task
+ * @returns {string}
  */
 function taskCardContentTemplate(task) {
   const dueDate = task.dueDate || "-";
@@ -115,16 +100,9 @@ function taskCardContentTemplate(task) {
 }
 
 /**
- * Generates HTML template for task card edit form
- * @param {Object} task - The task object
- * @param {string} task.id - Task ID
- * @param {string} task.category - Task category
- * @param {string} task.title - Task title
- * @param {string} task.description - Task description
- * @param {string} task.dueDate - Task due date
- * @param {string} task.priority - Task priority
- * @param {Array} task.subtasks - Subtasks array
- * @returns {string} HTML string for task card edit form
+ * Returns the full HTML for the editable task overlay form.
+ * @param {object} task
+ * @returns {string}
  */
 function taskCardEditTemplate(task) {
   const priority = (task.priority || "medium").toLowerCase();
@@ -267,9 +245,9 @@ function taskCardEditTemplate(task) {
 }
 
 /**
- * Renders detailed assignee list with avatars and names
- * @param {Array} list - Array of assignee objects or strings
- * @returns {string} HTML string for assignee list
+ * Returns HTML for the assignee list in the task detail overlay.
+ * @param {Array<string|{name?:string,avatarClass?:string,initials?:string}>} list
+ * @returns {string}
  */
 function renderAssigneesDetail(list) {
   if (!list || !list.length) {
@@ -303,10 +281,10 @@ function renderAssigneesDetail(list) {
 }
 
 /**
- * Renders detailed subtask list with checkboxes
- * @param {Array} list - Array of subtask objects
- * @param {string} taskId - The parent task ID
- * @returns {string} HTML string for subtask list
+ * Returns HTML for the subtask checklist in the task detail overlay.
+ * @param {Array<{title?:string,done?:boolean,checked?:boolean}>} list
+ * @param {string} taskId
+ * @returns {string}
  */
 function renderSubtasksDetail(list, taskId) {
   if (!list || !list.length) {

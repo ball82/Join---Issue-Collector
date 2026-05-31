@@ -336,7 +336,7 @@ button:not(.dark-button):hover {
 
 .dark-button.inactive {
   opacity: 0.65;
-  cursor: pointer; 
+  cursor: pointer;
   transform: none;
   box-shadow: none;
   width: 100%;
@@ -511,12 +511,10 @@ header,
 
 .notification.success {
   background-color: #28a745;
-
 }
 
 .notification.error {
   background-color: #dc3545;
-
 }
 
 @keyframes fadeInOut {

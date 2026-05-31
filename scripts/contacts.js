@@ -12,12 +12,22 @@
     "rgb(255, 123, 0)",
   ];
 
+  /**
+   * Returns a colour from AVATAR_COLORS based on a hash of the name string.
+   * @param {string} [name=""]
+   * @returns {string}
+   */
   function getAvatarColor(name = "") {
     if (!AVATAR_COLORS.length) return "#ff7a00";
     const hash = name.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
     return AVATAR_COLORS[hash % AVATAR_COLORS.length];
   }
 
+  /**
+   * Checks whether an email address is already used by an existing contact in Firebase.
+   * @param {string} email
+   * @returns {Promise<boolean>}
+   */
   async function checkEmailExists(email) {
     try {
       const snap = await window.get(window.child(window.ref(window.firebaseDb), "contacts"));
@@ -29,6 +39,7 @@
 
   window.checkEmailExists = checkEmailExists;
 
+  /** Waits for Firebase globals to be ready, seeds contacts if needed, then subscribes to live updates. */
   async function init() {
     if (!window.firebaseDb || !window.ref || !window.get) {
       setTimeout(init, 100);
@@ -61,6 +72,7 @@
     { name: "Benedikt Ziegler", email: "benedikt.ziegler@example.com", phone: "+1 (555) 999-9999" },
   ];
 
+  /** Pushes SAMPLE_CONTACTS to Firebase when the contacts node is empty or missing. */
   async function seedIfEmpty() {
     try {
       const snap = await window.get(window.child(window.ref(window.firebaseDb), "contacts"));
@@ -72,10 +84,19 @@
 
   let lastSelectedItem = null;
 
+  /**
+   * Returns up to two uppercase initials from a full name.
+   * @param {string} name
+   * @returns {string}
+   */
   function getInitials(name) {
     return (name || "").split(" ").map((s) => s.charAt(0)).filter(Boolean).slice(0, 2).join("").toUpperCase();
   }
 
+  /**
+   * Updates the desktop contact detail panel with the given contact's data.
+   * @param {{ name?: string, email?: string, phone?: string }} contact
+   */
   function updateDesktopContactDetail(contact) {
     const logoEl = document.querySelector(".name-logo-large");
     const nameEl = document.querySelector(".name-large");
@@ -87,6 +108,11 @@
     if (phoneLabel) { phoneLabel.textContent = contact.phone || ""; phoneLabel.href = `tel:${(contact.phone || "").replace(/\\s/g, "")}`; }
   }
 
+  /**
+   * Sets the active contact and updates the detail panel (desktop) or opens the mobile view.
+   * @param {object} contact
+   * @param {HTMLElement} itemEl - The clicked list item element.
+   */
   function selectContact(contact, itemEl) {
     currentContact = contact;
     if (window.innerWidth <= 1023) { showMobileContactDetail(contact); return; }
@@ -100,6 +126,11 @@
     return currentContact;
   };
 
+  /**
+   * Creates a letter-section header element for the contact list.
+   * @param {string} letter
+   * @returns {HTMLElement}
+   */
   function createLetterSection(letter) {
     const userList = document.createElement("div");
     userList.className = "user-list";
@@ -107,6 +138,11 @@
     return userList;
   }
 
+  /**
+   * Creates a clickable contact list item element.
+   * @param {{ name?: string, email?: string }} contact
+   * @returns {HTMLElement}
+   */
   function createContactItem(contact) {
     const item = document.createElement("div");
     item.className = "contact-item";
@@ -117,6 +153,10 @@
     return item;
   }
 
+  /**
+   * Renders the full contact list sorted alphabetically with letter section headers.
+   * @param {object[]} contacts
+   */
   function render(contacts) {
     const container = document.getElementById("contact-list") || document.querySelector(".contact-list");
     if (!container) return;
@@ -132,6 +172,11 @@
     });
   }
 
+  /**
+   * Escapes HTML special characters to prevent XSS.
+   * @param {string} str
+   * @returns {string}
+   */
   function escapeHtml(str) {
     return String(str).replace(/[&<>"']/g, function (m) {
       return {
@@ -146,7 +191,10 @@
 
   document.addEventListener("DOMContentLoaded", init);
 
-  
+  /**
+   * Briefly shows a toast notification at the bottom of the screen.
+   * @param {string} message
+   */
   function showToast(message) {
     const toast = document.getElementById("toastNotification");
     const toastMessage = document.getElementById("toastMessage");
@@ -156,7 +204,10 @@
     setTimeout(() => toast.classList.remove("show"), 3000);
   }
 
-  
+  /**
+   * Fills the mobile contact detail panel DOM elements with the contact's data.
+   * @param {{ name?: string, email?: string, phone?: string }} contact
+   */
   function updateMobileContactElements(contact) {
     const avatar = document.getElementById("mobileContactAvatar");
     const name = document.getElementById("mobileContactName");
@@ -170,7 +221,10 @@
     phone.textContent = contact.phone || "N/A"; phone.href = `tel:${(contact.phone || "").replace(/\s/g, "")}`;
   }
 
-  
+  /**
+   * Opens the full-screen mobile contact detail view.
+   * @param {{ name?: string, email?: string, phone?: string }} contact
+   */
   function showMobileContactDetail(contact) {
     const mobileDetail = document.getElementById("mobileContactDetail");
     if (!mobileDetail || window.innerWidth > 1023) return;
@@ -180,7 +234,7 @@
     document.body.style.overflow = "hidden";
   }
 
-  
+  /** Closes the mobile contact detail view and hides the floating action menu. */
   function closeMobileContactDetail() {
     const mobileDetail = document.getElementById("mobileContactDetail");
     if (mobileDetail) { mobileDetail.classList.remove("active"); document.body.style.overflow = ""; }
@@ -188,7 +242,7 @@
     if (menu) menu.classList.remove("show");
   }
 
-  
+  /** Toggles the mobile floating action menu visibility. */
   function toggleMobileContactMenu() {
     const menu = document.getElementById("mobileContactMenu");
     if (menu) {
@@ -196,7 +250,7 @@
     }
   }
 
-  
+  /** Closes the mobile detail view and opens the edit dialog for the current contact. */
   function editMobileContact() {
     const menu = document.getElementById("mobileContactMenu");
     if (menu) menu.classList.remove("show");
@@ -204,7 +258,7 @@
     openEditContactDialog();
   }
 
-  
+  /** Deletes the currently selected contact from the mobile view. */
   function deleteMobileContact() {
     const menu = document.getElementById("mobileContactMenu");
     if (menu) menu.classList.remove("show");

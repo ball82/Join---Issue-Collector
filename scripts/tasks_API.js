@@ -1,22 +1,13 @@
-/**
- * @fileoverview Tasks API module for Firebase task management
- * @module tasks_API
- */
-
-/** @type {Array<Object>} */
 let tasks = [];
 
-/** @constant {string} */
 const FIREBASE_BASE_URL =
   "https://join-60a91-default-rtdb.europe-west1.firebasedatabase.app";
 
-/** @constant {string} */
 const TASKS_BASE_URL = `${FIREBASE_BASE_URL}/tasks`;
 
 /**
- * Checks if the given value represents an in-progress status
- * @param {string} value - The status value to check
- * @returns {boolean} True if the value is an in-progress status
+ * @param {string} value
+ * @returns {boolean} True for all recognised "in progress" status strings.
  */
 function isInProgressStatus(value) {
   return (
@@ -25,9 +16,8 @@ function isInProgressStatus(value) {
 }
 
 /**
- * Checks if the given value represents an await-feedback status
- * @param {string} value - The status value to check
- * @returns {boolean} True if the value is an await-feedback status
+ * @param {string} value
+ * @returns {boolean} True for all recognised "await feedback" status strings.
  */
 function isAwaitFeedbackStatus(value) {
   return (
@@ -38,9 +28,10 @@ function isAwaitFeedbackStatus(value) {
 }
 
 /**
- * Normalizes a task status string to a consistent format
- * @param {string} [status=""] - The status to normalize
- * @returns {string} The normalized status
+ * Converts any raw status string to the canonical internal value used by the board.
+ * Defaults to "triage" when the input is empty.
+ * @param {string} [status=""]
+ * @returns {string}
  */
 function normalizeTaskStatus(status = "") {
   const value = String(status).trim().toLowerCase();
@@ -54,9 +45,8 @@ function normalizeTaskStatus(status = "") {
 }
 
 /**
- * Fetches all tasks from Firebase
- * @async
- * @returns {Promise<Array<Object>>} Array of task objects
+ * Loads all tasks from Firebase and stores them in the module-level `tasks` array.
+ * @returns {Promise<object[]>}
  */
 async function fetchTasks() {
   try {
@@ -79,9 +69,9 @@ async function fetchTasks() {
 }
 
 /**
- * Normalizes raw task data from Firebase into a consistent format
- * @param {Object|Array|null} raw - Raw task data from Firebase
- * @returns {Array<Object>} Array of normalized task objects
+ * Converts the raw Firebase payload (object or array) into a normalised task array.
+ * @param {object|Array|null} raw
+ * @returns {object[]}
  */
 function normalizeTasks(raw) {
   if (!raw) return [];
@@ -96,9 +86,9 @@ function normalizeTasks(raw) {
 }
 
 /**
- * Enriches a task object with default values and normalized fields
- * @param {Object} task - The task object to enrich
- * @returns {Object} The enriched task object
+ * Fills in default values and normalises fields for a single task object.
+ * @param {object} task
+ * @returns {object} Fully enriched task object.
  */
 function enrichTask(task) {
   const idFromTask = task.id || task.firebaseId;
@@ -130,11 +120,8 @@ function enrichTask(task) {
 }
 
 /**
- * Normalizes a creator object, ensuring name, email and type are present.
- * The `type` field distinguishes internally created tickets ("internal")
- * from externally submitted ones via the e-mail issue collector ("external").
- * @param {Object} [creator] - Raw creator data (may be undefined)
- * @returns {{name: string, email: string, type: string}} Normalized creator
+ * @param {*} creator - Raw creator value from Firebase.
+ * @returns {{ name: string, email: string, type: 'internal'|'external' }}
  */
 function normalizeCreator(creator) {
   const raw = creator && typeof creator === "object" ? creator : {};
@@ -147,11 +134,9 @@ function normalizeCreator(creator) {
 }
 
 /**
- * Adds a new task to Firebase
- * @async
- * @param {Object} taskData - The task data to add
- * @returns {Promise<Object>} The newly created task object
- * @throws {Error} If the request fails
+ * Creates a new task in Firebase and appends it to the local tasks array.
+ * @param {object} taskData
+ * @returns {Promise<object>} The created task with its Firebase id.
  */
 async function addTask(taskData) {
   const cleanTask = enrichTask({
@@ -185,11 +170,9 @@ async function addTask(taskData) {
 }
 
 /**
- * Updates the status of a task in Firebase
- * @async
- * @param {string} taskId - The ID of the task to update
- * @param {string} newStatus - The new status to set
- * @throws {Error} If the request fails
+ * PATCHes the task status in Firebase, updates the local array, and fires the status webhook.
+ * @param {string} taskId
+ * @param {string} newStatus
  */
 async function updateTaskStatus(taskId, newStatus) {
   const index = tasks.findIndex((t) => String(t.id) === String(taskId));
@@ -218,25 +201,17 @@ async function updateTaskStatus(taskId, newStatus) {
 
   tasks[index] = { ...task, status: normalizedStatus };
 
-  // Notify the creator about the status change (fire-and-forget via n8n).
   notifyStatusChange(tasks[index], previousStatus, normalizedStatus);
 }
 
-/**
- * URL of the n8n webhook that sends the status-change notification email.
- * Replace with the production URL shown in your n8n Webhook node.
- * @constant {string}
- */
 const STATUS_WEBHOOK_URL = "http://localhost:5678/webhook/join-status-change";
 
 /**
- * Notifies the ticket creator about a column/status change by calling an n8n
- * webhook. Fire-and-forget: failures are swallowed so moving a card never
- * breaks if n8n is unreachable. Only fires when a creator email exists and the
- * status actually changed.
- * @param {Object} task - The updated task (must contain creator + title)
- * @param {string} previousStatus - The status before the change
- * @param {string} newStatus - The status after the change
+ * Fires a webhook to notify the task creator when its status changes.
+ * Silently skips if the creator has no email or the status is unchanged.
+ * @param {object} task - The updated task object.
+ * @param {string} previousStatus - Status before the update.
+ * @param {string} newStatus - Status after the update.
  */
 function notifyStatusChange(task, previousStatus, newStatus) {
   const creatorEmail = task.creator && task.creator.email;
@@ -258,24 +233,17 @@ function notifyStatusChange(task, previousStatus, newStatus) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
-  }).catch(() => {
-    /* Notification is best-effort; ignore network errors. */
-  });
+  }).catch(() => {});
 }
 
-/**
- * Generates a unique ID based on timestamp and random number
- * @returns {string} A unique identifier
- */
+/** @returns {string} A unique id based on the current timestamp and random noise. */
 function generateId() {
   return String(Date.now() + Math.random());
 }
 
 /**
- * Saves a task to Firebase
- * @async
- * @param {Object} task - The task object to save
- * @throws {Error} If the HTTP request fails
+ * Replaces a task document in Firebase with a full PUT request.
+ * @param {object} task - Task object with a valid firebaseId.
  */
 async function saveTask(task) {
   let firebaseId = task.firebaseId;
@@ -301,10 +269,8 @@ async function saveTask(task) {
 }
 
 /**
- * Deletes a task from Firebase by its ID
- * @async
- * @param {string} taskId - The ID of the task to delete
- * @throws {Error} If the request fails
+ * Deletes a task from Firebase by its local or Firebase id.
+ * @param {string} taskId
  */
 async function deleteTaskById(taskId) {
   const task = tasks.find(
@@ -323,12 +289,7 @@ async function deleteTaskById(taskId) {
   }
 }
 
-
-/**
- * Seeds the database with sample tasks if empty
- * @async
- */
+/** No-op placeholder retained for API compatibility. */
 async function seedTasksIfEmpty() {
-  // No-op: sample task seeding has been removed.
   return;
 }

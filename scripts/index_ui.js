@@ -1,5 +1,5 @@
 
-
+/** Wires up the password visibility toggle on the login form. */
 function initPasswordToggle() {
   const togglePassword = document.getElementById("toggle-password");
   const passwordInput = document.getElementById("password");
@@ -12,6 +12,7 @@ function initPasswordToggle() {
   }
 }
 
+/** Sets up the login ↔ signup form toggle buttons and the back-to-login arrow. */
 function initFormToggle() {
   const toggleForm = document.getElementById("toggle-form");
   const toggleForm2 = document.getElementById("toggle-form-2");
@@ -53,6 +54,10 @@ function initFormToggle() {
   }
 }
 
+/**
+ * Plays the logo fly-in intro animation on page load.
+ * On mobile, briefly shows the white logo before switching to the coloured one.
+ */
 function initIntroAnimation() {
   window.addEventListener("load", () => {
     const intro = document.getElementById("intro-screen");

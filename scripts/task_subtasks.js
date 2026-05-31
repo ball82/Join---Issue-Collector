@@ -1,7 +1,7 @@
 
-
 let subtaskDrafts = [];
 
+/** Wires up the subtask input field and add button, then renders any existing drafts. */
 function initSubtaskControls() {
   const input = document.getElementById("subtaskInput");
   const addBtn = document.getElementById("addSubtaskBtn");
@@ -21,6 +21,7 @@ function initSubtaskControls() {
   renderSubtaskDrafts();
 }
 
+/** Reads the subtask input, pushes a new draft to the list, and clears the field. */
 function addSubtaskFromInput() {
   const input = document.getElementById("subtaskInput");
   if (!input) return;
@@ -37,12 +38,20 @@ function addSubtaskFromInput() {
   renderSubtaskDrafts();
 }
 
+/**
+ * Removes the draft at the given index and re-renders the list.
+ * @param {number} index
+ */
 function removeSubtaskDraft(index) {
   if (index < 0 || index >= subtaskDrafts.length) return;
   subtaskDrafts.splice(index, 1);
   renderSubtaskDrafts();
 }
 
+/**
+ * Moves the draft at the given index back into the input for editing.
+ * @param {number} index
+ */
 function editSubtaskDraft(index) {
   if (index < 0 || index >= subtaskDrafts.length) return;
 
@@ -57,6 +66,7 @@ function editSubtaskDraft(index) {
   removeSubtaskDraft(index);
 }
 
+/** Re-renders the full subtask draft list in the DOM. */
 function renderSubtaskDrafts() {
   const list = document.getElementById("subtaskList");
   if (!list) return;
@@ -102,6 +112,10 @@ function renderSubtaskDrafts() {
   });
 }
 
+/**
+ * Returns a clean copy of the current draft list for use in the task payload.
+ * @returns {Array<{title:string, done:boolean}>}
+ */
 function getSubtaskDrafts() {
   return subtaskDrafts.map((s) => ({
     title: s.title,
@@ -109,11 +123,17 @@ function getSubtaskDrafts() {
   }));
 }
 
+/** Clears all subtask drafts and empties the rendered list. */
 function resetSubtasks() {
   subtaskDrafts = [];
   renderSubtaskDrafts();
 }
 
+/**
+ * Reads the overlay subtask input, appends the new subtask to the task in Firebase,
+ * and refreshes the edit overlay and board.
+ * @param {string} taskId
+ */
 async function onAddSubtaskFromOverlay(taskId) {
   const input = document.getElementById("overlaySubtaskInput");
   if (!input) return;

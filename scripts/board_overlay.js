@@ -1,10 +1,19 @@
 
-
+/**
+ * Delegated click handler for the tasks column: routes to move-button or card-open logic.
+ * @param {MouseEvent} event
+ */
 function onTaskCardClick(event) {
   if (handleMoveButtonClick(event)) return;
   handleTaskCardOpen(event);
 }
 
+/**
+ * Handles a click on a card's move button; returns false when the click target
+ * is not a move button so the caller can fall through.
+ * @param {MouseEvent} event
+ * @returns {boolean}
+ */
 function handleMoveButtonClick(event) {
   const moveBtn = event.target.closest(".card-move-btn");
   if (!moveBtn) return false;
@@ -22,6 +31,10 @@ function handleMoveButtonClick(event) {
   return true;
 }
 
+/**
+ * Opens the task detail overlay when the user clicks anywhere on a card.
+ * @param {MouseEvent} event
+ */
 function handleTaskCardOpen(event) {
   const card = event.target.closest(".card-task");
   if (!card) return;
@@ -32,12 +45,19 @@ function handleTaskCardOpen(event) {
   openTaskCard(taskId);
 }
 
+/**
+ * @returns {{ overlay: HTMLElement|null, content: HTMLElement|null }}
+ */
 function getOverlayElements() {
   const overlay = document.querySelector(".overlay-task-card");
   const content = document.getElementById("taskCardContent");
   return { overlay, content };
 }
 
+/**
+ * Creates the backdrop element for a confirmation dialog.
+ * @returns {HTMLElement}
+ */
 function createConfirmOverlay() {
   const overlay = document.createElement("div");
   overlay.className = "confirm-overlay confirm-overlay--open";
@@ -46,6 +66,11 @@ function createConfirmOverlay() {
   return overlay;
 }
 
+/**
+ * Creates the inner dialog element with Cancel and Delete buttons.
+ * @param {string} message
+ * @returns {HTMLElement}
+ */
 function createConfirmDialog(message) {
   const dialog = document.createElement("div");
   dialog.className = "confirm-dialog";
@@ -66,11 +91,19 @@ function createConfirmDialog(message) {
   return dialog;
 }
 
+/**
+ * Moves focus to the Cancel button for accessible keyboard navigation.
+ * @param {HTMLElement} dialog
+ */
 function focusCancelButton(dialog) {
   const cancelBtn = dialog.querySelector(".confirm-dialog__button--cancel");
   if (cancelBtn) cancelBtn.focus();
 }
 
+/**
+ * Attaches an Escape key listener that calls cleanup(false).
+ * @param {Function} cleanup - Called with the boolean result.
+ */
 function attachConfirmKeydown(cleanup) {
   const handler = (event) => {
     if (event.key === "Escape") {
@@ -81,6 +114,12 @@ function attachConfirmKeydown(cleanup) {
   document.addEventListener("keydown", handler);
 }
 
+/**
+ * Wires up Cancel, Confirm, backdrop-click, and Escape key events.
+ * @param {HTMLElement} overlay
+ * @param {HTMLElement} dialog
+ * @param {Function} resolve - Promise resolve callback.
+ */
 function setupConfirmEvents(overlay, dialog, resolve) {
   const cancelBtn = dialog.querySelector(".confirm-dialog__button--cancel");
   const confirmBtn = dialog.querySelector(".confirm-dialog__button--confirm");
@@ -100,6 +139,11 @@ function setupConfirmEvents(overlay, dialog, resolve) {
   attachConfirmKeydown(cleanup);
 }
 
+/**
+ * Shows a modal confirmation dialog and resolves to true (confirmed) or false (cancelled).
+ * @param {string} message
+ * @returns {Promise<boolean>}
+ */
 function showConfirmPopup(message) {
   return new Promise((resolve) => {
     const overlay = createConfirmOverlay();
@@ -111,6 +155,10 @@ function showConfirmPopup(message) {
   });
 }
 
+/**
+ * Renders and displays the read-only task detail overlay.
+ * @param {string} taskId
+ */
 function openTaskCard(taskId) {
   const { overlay, content } = getOverlayElements();
   if (!overlay || !content) return;
@@ -125,6 +173,7 @@ function openTaskCard(taskId) {
   closeMoveMenu();
 }
 
+/** Hides the task detail overlay and clears its content. */
 function closeTaskCard() {
   const { overlay, content } = getOverlayElements();
   if (!overlay) return;
@@ -153,6 +202,10 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+/**
+ * Switches the overlay content to the task edit form.
+ * @param {string} taskId
+ */
 function onTaskEditClick(taskId) {
   const { overlay, content } = getOverlayElements();
   if (!overlay || !content) return;
@@ -165,6 +218,11 @@ function onTaskEditClick(taskId) {
   initEditAssignedSection(task, content);
 }
 
+/**
+ * Initialises the assignee dropdown inside the edit overlay after a short tick.
+ * @param {object} task
+ * @param {HTMLElement} content
+ */
 function initEditAssignedSection(task, content) {
   setTimeout(() => {
     try {
@@ -177,6 +235,10 @@ function initEditAssignedSection(task, content) {
   }, 0);
 }
 
+/**
+ * Syncs the `selectedAssignees` array with the task's current assignees.
+ * @param {object} task
+ */
 function updateSelectedAssignees(task) {
   if (!Array.isArray(task.assignedTo)) return;
   if (typeof selectedAssignees === "undefined") return;
@@ -188,6 +250,11 @@ function updateSelectedAssignees(task) {
   selectedAssignees = ids;
 }
 
+/**
+ * Resolves an assignee entry (string name, id string, or object) to a contact id.
+ * @param {string|object|null} entry
+ * @returns {string|null}
+ */
 function normalizeAssigneeId(entry) {
   if (!entry) return null;
 
@@ -205,6 +272,10 @@ function normalizeAssigneeId(entry) {
   return null;
 }
 
+/**
+ * Calls the scoped or global assignedTo initialiser depending on what is available.
+ * @param {HTMLElement} content
+ */
 function initAssignedToInEdit(content) {
   if (typeof initAssignedToScoped === "function") {
     initAssignedToScoped(content);
@@ -215,15 +286,28 @@ function initAssignedToInEdit(content) {
   }
 }
 
+/**
+ * Hides the assignee dropdown inside the edit overlay.
+ * @param {HTMLElement} content
+ */
 function hideAssignedDropdown(content) {
   const dropdown = content.querySelector(".assigned-to-dropdown");
   if (dropdown) dropdown.style.display = "none";
 }
 
+/**
+ * Discards edits and reverts the overlay to the read-only detail view.
+ * @param {string} taskId
+ */
 function onTaskEditCancel(taskId) {
   openTaskCard(taskId);
 }
 
+/**
+ * Extracts and trims the editable fields from the edit form's FormData.
+ * @param {FormData} formData
+ * @returns {{ title: string, description: string, dueDate: string, priorityRaw: string }}
+ */
 function buildTaskUpdatePayload(formData) {
   const title = String(formData.get("title") || "").trim();
   const description = String(formData.get("description") || "").trim();
@@ -232,6 +316,10 @@ function buildTaskUpdatePayload(formData) {
   return { title, description, dueDate, priorityRaw };
 }
 
+/**
+ * @param {{ title: string }} payload
+ * @returns {boolean} False and shows an alert when the title is empty.
+ */
 function isEditPayloadValid(payload) {
   if (!payload.title) {
     alert("Title is required.");
@@ -240,10 +328,20 @@ function isEditPayloadValid(payload) {
   return true;
 }
 
+/**
+ * @param {string} taskId
+ * @returns {number} Index of the task in the module-level `tasks` array, or -1.
+ */
 function findTaskIndexById(taskId) {
   return tasks.findIndex((task) => String(task.id) === String(taskId));
 }
 
+/**
+ * Merges the edit payload into the existing task object.
+ * @param {object} oldTask
+ * @param {{ title: string, description: string, dueDate: string, priorityRaw: string }} payload
+ * @returns {object} Updated task object.
+ */
 function createUpdatedTask(oldTask, payload) {
   const assignedTo =
     typeof getAssignedTo === "function"
@@ -260,6 +358,12 @@ function createUpdatedTask(oldTask, payload) {
   };
 }
 
+/**
+ * Saves the updated task to Firebase, updates the local array, and re-opens the detail view.
+ * @param {object} updatedTask
+ * @param {number} index - Index in the tasks array.
+ * @param {string} taskId
+ */
 async function persistEditedTask(updatedTask, index, taskId) {
   try {
     await saveTask(updatedTask);
@@ -272,6 +376,11 @@ async function persistEditedTask(updatedTask, index, taskId) {
   }
 }
 
+/**
+ * Form submit handler for the task edit overlay.
+ * @param {SubmitEvent} event
+ * @param {string} taskId
+ */
 async function onTaskEditSave(event, taskId) {
   event.preventDefault();
 
@@ -289,6 +398,10 @@ async function onTaskEditSave(event, taskId) {
   await persistEditedTask(updatedTask, index, taskId);
 }
 
+/**
+ * Toggles the active state of the clicked priority button inside the edit form.
+ * @param {MouseEvent} event
+ */
 function onEditPriorityClick(event) {
   const button = event.currentTarget;
   const wrapper = button.closest(".priority-buttons");
@@ -303,6 +416,10 @@ function onEditPriorityClick(event) {
   if (hidden) hidden.value = button.dataset.priority || "Medium";
 }
 
+/**
+ * Shows a confirmation dialog before deleting a task from the overlay.
+ * @param {string} taskId
+ */
 async function onOverlayDeleteClick(taskId) {
   const confirmed = await showConfirmPopup(
     "Do you really want to delete this task?"
@@ -312,6 +429,10 @@ async function onOverlayDeleteClick(taskId) {
   await deleteTask(taskId);
 }
 
+/**
+ * Deletes a task from Firebase and the local array, then closes the overlay.
+ * @param {string} taskId
+ */
 async function deleteTask(taskId) {
   try {
     await deleteTaskById(taskId);
@@ -330,15 +451,30 @@ async function deleteTask(taskId) {
   }
 }
 
+/**
+ * @param {object} task
+ * @returns {object[]} A shallow copy of the task's subtasks array.
+ */
 function getClonedSubtasks(task) {
   return Array.isArray(task.subtasks) ? [...task.subtasks] : [];
 }
 
+/**
+ * Returns a new subtask object with its done/checked state updated.
+ * @param {object} subtask
+ * @param {boolean} checked
+ * @returns {object}
+ */
 function createUpdatedSubtask(subtask, checked) {
   const done = !!checked;
   return { ...subtask, done, checked: done };
 }
 
+/**
+ * Saves the updated task to Firebase and refreshes the board.
+ * @param {object} updatedTask
+ * @param {number} index - Index in the tasks array.
+ */
 async function persistSubtaskUpdate(updatedTask, index) {
   try {
     await saveTask(updatedTask);
@@ -349,6 +485,12 @@ async function persistSubtaskUpdate(updatedTask, index) {
   }
 }
 
+/**
+ * Toggles the done state of a subtask and persists the change.
+ * @param {string} taskId
+ * @param {number} index - Subtask index within the task.
+ * @param {boolean} checked
+ */
 async function onSubtaskToggle(taskId, index, checked) {
   const taskIndex = findTaskIndexById(taskId);
   if (taskIndex === -1) return;

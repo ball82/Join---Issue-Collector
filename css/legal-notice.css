@@ -74,9 +74,9 @@
 
 @media (max-width: 1023px) {
   .legal-content {
-    margin: 0; 
-    padding: 24px; 
-    max-width: 100%; 
+    margin: 0;
+    padding: 24px;
+    max-width: 100%;
     box-sizing: border-box;
     margin-top: 100px;
     margin-bottom: 60px;
@@ -85,6 +85,6 @@
 
 @media (max-width: 410px) {
   .legal-content {
-    padding: 12px; 
+    padding: 12px;
   }
 }

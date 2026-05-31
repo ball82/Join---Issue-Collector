@@ -1,5 +1,11 @@
 
-
+/**
+ * Validates the required task form fields and shows inline errors.
+ * @param {string} title
+ * @param {string} dueDate
+ * @param {string} category
+ * @returns {boolean} True when all required fields are filled.
+ */
 function validateTaskForm(title, dueDate, category) {
   let valid = true;
 
@@ -21,6 +27,11 @@ function validateTaskForm(title, dueDate, category) {
   return valid;
 }
 
+/**
+ * Writes an error message into the element with the given id.
+ * @param {string} id - Element id of the error container.
+ * @param {string} message
+ */
 function showError(id, message) {
   const element = document.getElementById(id);
   if (element) {
@@ -28,6 +39,7 @@ function showError(id, message) {
   }
 }
 
+/** Clears all inline validation error messages for the task form. */
 function clearFormErrors() {
   const errorIds = ["titleError", "dueDateError", "categoryError"];
 
@@ -39,11 +51,21 @@ function clearFormErrors() {
   });
 }
 
+/**
+ * Returns the trimmed value of an input element by id.
+ * @param {string} id
+ * @returns {string}
+ */
 function getInputValue(id) {
   const element = document.getElementById(id);
   return element ? String(element.value || "").trim() : "";
 }
 
+/**
+ * Escapes HTML special characters to prevent XSS.
+ * @param {string} str
+ * @returns {string}
+ */
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, "&amp;")

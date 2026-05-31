@@ -240,9 +240,9 @@ overlay-modal {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  max-height: 264px; 
+  max-height: 264px;
   overflow-y: auto;
-  padding-right: 6px; 
+  padding-right: 6px;
 }
 
 .subtask-item {
@@ -326,9 +326,9 @@ overlay-modal {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  max-height: 264px; 
+  max-height: 264px;
   overflow-y: auto;
-  padding-right: 6px; 
+  padding-right: 6px;
 }
 
 .subtask-remove-btn {
@@ -387,8 +387,8 @@ overlay-modal {
 .task-form__column-right-actions {
   display: flex;
   gap: 12px;
-  justify-content: flex-end; 
-  margin-top: auto; 
+  justify-content: flex-end;
+  margin-top: auto;
   padding-top: 18px;
 }
 

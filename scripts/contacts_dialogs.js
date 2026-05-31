@@ -1,3 +1,4 @@
+/** Opens the add-contact dialog and locks body scroll. */
 function openAddContactDialog() {
   const dialog = document.getElementById("addContactDialog");
   if (dialog) {
@@ -6,6 +7,7 @@ function openAddContactDialog() {
   }
 }
 
+/** Closes the add-contact dialog, resets the form, and clears validation errors. */
 function closeAddContactDialog() {
   const dialog = document.getElementById("addContactDialog");
   if (dialog) {
@@ -17,6 +19,11 @@ function closeAddContactDialog() {
   }
 }
 
+/**
+ * Returns up to two uppercase initials from a contact name.
+ * @param {string} name
+ * @returns {string}
+ */
 function getContactInitials(name) {
   return (name || "")
     .split(" ")
@@ -27,6 +34,10 @@ function getContactInitials(name) {
     .toUpperCase();
 }
 
+/**
+ * Populates the edit-contact dialog fields with the given contact's data.
+ * @param {{ name?: string, email?: string, phone?: string }} contact
+ */
 function fillEditContactDialog(contact) {
   document.getElementById("editContactName").value = contact.name || "";
   document.getElementById("editContactEmail").value = contact.email || "";
@@ -35,6 +46,7 @@ function fillEditContactDialog(contact) {
   if (avatar) avatar.textContent = getContactInitials(contact.name);
 }
 
+/** Opens the edit-contact dialog for the currently selected contact. */
 function openEditContactDialog() {
   const contact = window.getCurrentContact();
   if (!contact) {
@@ -48,6 +60,7 @@ function openEditContactDialog() {
   document.body.style.overflow = "hidden";
 }
 
+/** Re-opens the mobile contact detail view after an edit dialog was closed. */
 function restoreMobileContactView() {
   const isMobile = window.innerWidth <= 1023;
   if (isMobile) {
@@ -56,6 +69,7 @@ function restoreMobileContactView() {
   }
 }
 
+/** Closes the edit-contact dialog and restores the mobile contact view if applicable. */
 function closeEditContactDialog() {
   const dialog = document.getElementById("editContactDialog");
   if (dialog) {
@@ -66,11 +80,16 @@ function closeEditContactDialog() {
   restoreMobileContactView();
 }
 
+/** Deletes the current contact and closes the edit dialog. */
 function deleteContactFromDialog() {
   deleteCurrentContact();
   closeEditContactDialog();
 }
 
+/**
+ * Removes a contact document from Firebase.
+ * @param {{ id: string }} contact
+ */
 async function removeContactFromFirebase(contact) {
   if (!window.remove || !window.ref || !window.firebaseDb) {
     alert("Firebase is not ready yet. Please try again.");
@@ -85,6 +104,7 @@ async function removeContactFromFirebase(contact) {
   }
 }
 
+/** Shows a native confirm dialog and deletes the currently selected contact from Firebase. */
 async function deleteCurrentContact() {
   const contact = window.getCurrentContact();
   if (!contact || !contact.id) {
@@ -95,6 +115,11 @@ async function deleteCurrentContact() {
   await removeContactFromFirebase(contact);
 }
 
+/**
+ * Finds the first contact-item element whose name label matches the given name.
+ * @param {string} name
+ * @returns {HTMLElement|null}
+ */
 function findContactItemByName(name) {
   const items = document.querySelectorAll(".contact-item");
   for (const item of items) {
@@ -104,6 +129,13 @@ function findContactItemByName(name) {
   return null;
 }
 
+/**
+ * Selects the newly created contact in the list (or opens the mobile detail view).
+ * @param {string} id
+ * @param {string} name
+ * @param {string} email
+ * @param {string} phone
+ */
 function selectNewlyAddedContact(id, name, email, phone) {
   const contact = { id, name, email, phone };
   if (window.innerWidth <= 1023) {
@@ -114,10 +146,19 @@ function selectNewlyAddedContact(id, name, email, phone) {
   if (item) item.click();
 }
 
+/**
+ * Wraps a message string in a success-message HTML structure.
+ * @param {string} message
+ * @returns {string}
+ */
 function buildSuccessMessageHTML(message) {
   return `<div class="success-message-wrapper"><div class="contact-success-message">${message}</div></div>`;
 }
 
+/**
+ * Temporarily replaces the contact info area with a success message.
+ * @param {string} message
+ */
 function showSuccessMessage(message) {
   const infoArea = document.querySelector(".info-contact-area");
   if (!infoArea) return;
@@ -126,6 +167,12 @@ function showSuccessMessage(message) {
   setTimeout(() => { infoArea.innerHTML = originalContent; }, 2000);
 }
 
+/**
+ * Marks an input as invalid and displays a validation error message.
+ * @param {string} inputId
+ * @param {string} errorId
+ * @param {string} message
+ */
 function showValidationError(inputId, errorId, message) {
   const input = document.getElementById(inputId);
   const error = document.getElementById(errorId);
@@ -139,6 +186,10 @@ function showValidationError(inputId, errorId, message) {
   }
 }
 
+/**
+ * Clears all validation error states for either the "add" or "edit" form.
+ * @param {"add"|"edit"} formType
+ */
 function clearValidationErrors(formType) {
   if (formType === "add") {
     clearFieldError("newContactName", "errorContactName");
@@ -151,6 +202,11 @@ function clearValidationErrors(formType) {
   }
 }
 
+/**
+ * Removes the error class and clears the error text for a single field.
+ * @param {string} inputId
+ * @param {string} errorId
+ */
 function clearFieldError(inputId, errorId) {
   const input = document.getElementById(inputId);
   const error = document.getElementById(errorId);
@@ -164,6 +220,13 @@ function clearFieldError(inputId, errorId) {
   }
 }
 
+/**
+ * Validates a contact name: must be non-empty and contain only allowed characters.
+ * @param {string} value
+ * @param {string} inputId
+ * @param {string} errorId
+ * @returns {boolean}
+ */
 function validateName(value, inputId, errorId) {
   if (!value) {
     showValidationError(inputId, errorId, "Please enter a name");
@@ -177,6 +240,13 @@ function validateName(value, inputId, errorId) {
   return true;
 }
 
+/**
+ * Validates an email address format.
+ * @param {string} value
+ * @param {string} inputId
+ * @param {string} errorId
+ * @returns {boolean}
+ */
 function validateEmail(value, inputId, errorId) {
   if (!value) {
     showValidationError(inputId, errorId, "Please enter an email address");
@@ -190,6 +260,13 @@ function validateEmail(value, inputId, errorId) {
   return true;
 }
 
+/**
+ * Validates the format and minimum digit count of a phone number.
+ * @param {string} value
+ * @param {string} inputId
+ * @param {string} errorId
+ * @returns {boolean}
+ */
 function validatePhoneFormat(value, inputId, errorId) {
   const pattern = /^[0-9+\-\(\)\s]+$/;
   if (!pattern.test(value)) {
@@ -203,6 +280,13 @@ function validatePhoneFormat(value, inputId, errorId) {
   return true;
 }
 
+/**
+ * Validates a phone field: must be non-empty and pass format validation.
+ * @param {string} value
+ * @param {string} inputId
+ * @param {string} errorId
+ * @returns {boolean}
+ */
 function validatePhone(value, inputId, errorId) {
   if (!value) {
     showValidationError(inputId, errorId, "Please enter a phone number");
@@ -211,6 +295,13 @@ function validatePhone(value, inputId, errorId) {
   return validatePhoneFormat(value, inputId, errorId);
 }
 
+/**
+ * Runs all three field validations for the add-contact form.
+ * @param {string} name
+ * @param {string} email
+ * @param {string} phone
+ * @returns {boolean} True only when all three fields are valid.
+ */
 function validateAddForm(name, email, phone) {
   const nameOk = validateName(name, "newContactName", "errorContactName");
   const emailOk = validateEmail(email, "newContactEmail", "errorContactEmail");
@@ -218,6 +309,13 @@ function validateAddForm(name, email, phone) {
   return nameOk && emailOk && phoneOk;
 }
 
+/**
+ * Runs all three field validations for the edit-contact form.
+ * @param {string} name
+ * @param {string} email
+ * @param {string} phone
+ * @returns {boolean} True only when all three fields are valid.
+ */
 function validateEditForm(name, email, phone) {
   const nameOk = validateName(name, "editContactName", "errorEditName");
   const emailOk = validateEmail(email, "editContactEmail", "errorEditEmail");
@@ -225,6 +323,12 @@ function validateEditForm(name, email, phone) {
   return nameOk && emailOk && phoneOk;
 }
 
+/**
+ * Pushes a new contact to Firebase and selects it in the list.
+ * @param {string} name
+ * @param {string} email
+ * @param {string} phone
+ */
 async function saveNewContact(name, email, phone) {
   try {
     const newRef = await window.push(window.ref(window.firebaseDb, "contacts"), { name, email, phone });
@@ -237,6 +341,10 @@ async function saveNewContact(name, email, phone) {
   }
 }
 
+/**
+ * Submit handler for the add-contact form.
+ * @param {SubmitEvent} e
+ */
 async function handleAddContactSubmit(e) {
   e.preventDefault();
   clearValidationErrors("add");
@@ -252,6 +360,13 @@ async function handleAddContactSubmit(e) {
   await saveNewContact(name, email, phone);
 }
 
+/**
+ * Updates an existing contact document in Firebase.
+ * @param {string} id - Firebase contact id.
+ * @param {string} name
+ * @param {string} email
+ * @param {string} phone
+ */
 async function saveEditedContact(id, name, email, phone) {
   try {
     if (!window.set || !window.ref || !window.firebaseDb) {
@@ -267,6 +382,10 @@ async function saveEditedContact(id, name, email, phone) {
   }
 }
 
+/**
+ * Submit handler for the edit-contact form.
+ * @param {SubmitEvent} e
+ */
 async function handleEditContactSubmit(e) {
   e.preventDefault();
   clearValidationErrors("edit");

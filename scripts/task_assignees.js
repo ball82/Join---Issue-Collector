@@ -1,5 +1,4 @@
 
-
 const contacts = [
   { id: "sm", name: "Sofia Müller", avatarClass: "avatar-sm", initials: "SM" },
   { id: "am", name: "Anton Mayer", avatarClass: "avatar-am", initials: "AM" },
@@ -10,6 +9,7 @@ const contacts = [
 
 let selectedAssignees = [];
 
+/** Initialises the global assignee dropdown on the add-task page. */
 function initAssignedTo() {
   const input = document.getElementById("assignedToInput");
   const dropdown = document.getElementById("assignedToDropdown");
@@ -20,6 +20,13 @@ function initAssignedTo() {
   attachAssignedToHandlers(input, dropdown, list, selectedContainer);
 }
 
+/**
+ * Attaches focus, click, input, and outside-click handlers to the global dropdown elements.
+ * @param {HTMLElement} input
+ * @param {HTMLElement} dropdown
+ * @param {HTMLElement} list
+ * @param {HTMLElement} selectedContainer
+ */
 function attachAssignedToHandlers(input, dropdown, list, selectedContainer) {
   input.addEventListener("focus", showDropdown);
   input.addEventListener("click", () => handleInputClick(input, dropdown));
@@ -29,12 +36,22 @@ function attachAssignedToHandlers(input, dropdown, list, selectedContainer) {
   dropdown.addEventListener("click", (e) => e.stopPropagation());
 }
 
+/**
+ * Toggles the global dropdown open/closed when the input is clicked.
+ * @param {HTMLElement} input
+ * @param {HTMLElement} dropdown
+ */
 function handleInputClick(input, dropdown) {
   const wrapper = input.closest(".assigned-to-wrapper");
   if (dropdown.style.display === "block") { hideDropdown(); if (wrapper) wrapper.classList.remove("is-open"); }
   else { showDropdown(); if (wrapper) wrapper.classList.add("is-open"); }
 }
 
+/**
+ * Attaches a toggle handler to the chevron icon next to the assignee input.
+ * @param {HTMLElement} input
+ * @param {HTMLElement} dropdown
+ */
 function attachToggleHandler(input, dropdown) {
   const wrapper = input.closest(".assigned-to-wrapper");
   if (!wrapper) return;
@@ -49,6 +66,10 @@ function attachToggleHandler(input, dropdown) {
 
 let scopedElements = {};
 
+/**
+ * Initialises a scoped assignee dropdown within a specific container (e.g. the edit overlay).
+ * @param {HTMLElement} root - Container element that holds the dropdown markup.
+ */
 function initAssignedToScoped(root) {
   if (!root || !(root instanceof HTMLElement)) return;
   const input = root.querySelector('.assigned-to-input') || root.querySelector('#assignedToInput');
@@ -62,6 +83,7 @@ function initAssignedToScoped(root) {
   renderSelectedBadgesScoped();
 }
 
+/** Attaches click, input, and outside-click listeners to the scoped dropdown elements. */
 function attachScopedListeners() {
   const { input, dropdown, selectedContainer } = scopedElements;
   input.addEventListener("click", (e) => { e.stopPropagation(); toggleScopedDropdown(); });
@@ -71,6 +93,7 @@ function attachScopedListeners() {
   dropdown.addEventListener("click", (e) => e.stopPropagation());
 }
 
+/** Attaches a toggle handler to the chevron icon in the scoped dropdown wrapper. */
 function attachScopedToggle() {
   const { input, dropdown } = scopedElements;
   const wrapper = input.closest('.assigned-to-wrapper');
@@ -79,6 +102,7 @@ function attachScopedToggle() {
   if (toggleEl) toggleEl.addEventListener('click', (ev) => { ev.stopPropagation(); toggleScopedDropdown(); });
 }
 
+/** Opens the scoped dropdown and hides the selected-badges container. */
 function openScopedDropdown() {
   const { input, dropdown, selectedContainer } = scopedElements;
   dropdown.style.display = "block";
@@ -88,6 +112,7 @@ function openScopedDropdown() {
   filterContactsScoped();
 }
 
+/** Closes the scoped dropdown and restores the selected-badges container. */
 function closeScopedDropdown() {
   const { input, dropdown, selectedContainer } = scopedElements;
   dropdown.style.display = "none";
@@ -96,12 +121,17 @@ function closeScopedDropdown() {
   if (wrapper) wrapper.classList.remove('is-open');
 }
 
+/** Toggles the scoped dropdown between open and closed. */
 function toggleScopedDropdown() {
   const { dropdown } = scopedElements;
   if (dropdown.style.display === 'block') closeScopedDropdown();
   else openScopedDropdown();
 }
 
+/**
+ * Re-renders the scoped dropdown list with the given contact subset.
+ * @param {object[]} [filteredContacts=contacts]
+ */
 function renderContactOptionsScoped(filteredContacts = contacts) {
   const { list } = scopedElements;
   list.innerHTML = "";
@@ -111,6 +141,11 @@ function renderContactOptionsScoped(filteredContacts = contacts) {
   });
 }
 
+/**
+ * Creates a scoped dropdown list item for a contact.
+ * @param {{ id: string, name: string, avatarClass: string, initials: string }} contact
+ * @returns {HTMLElement}
+ */
 function createContactLiScoped(contact) {
   const isSelected = selectedAssignees.includes(contact.id);
   const li = document.createElement("li");
@@ -120,6 +155,7 @@ function createContactLiScoped(contact) {
   return li;
 }
 
+/** Filters the scoped contact list by the current input value. */
 function filterContactsScoped() {
   const { input } = scopedElements;
   const query = input.value.trim().toLowerCase();
@@ -127,6 +163,11 @@ function filterContactsScoped() {
   renderContactOptionsScoped(filtered);
 }
 
+/**
+ * Toggles a contact's selection in the scoped dropdown and updates the badge list.
+ * @param {string} id - Contact id.
+ * @param {HTMLElement|null} [listItemElement=null]
+ */
 function toggleAssigneeScoped(id, listItemElement = null) {
   const wasSelected = selectedAssignees.includes(id);
   if (wasSelected) selectedAssignees = selectedAssignees.filter((x) => x !== id);
@@ -136,12 +177,18 @@ function toggleAssigneeScoped(id, listItemElement = null) {
   renderSelectedBadgesScoped();
 }
 
+/**
+ * Updates the visual selected/checked state of a scoped list item.
+ * @param {HTMLElement} li
+ * @param {boolean} isNowSelected
+ */
 function updateListItemScoped(li, isNowSelected) {
   li.classList.toggle("selected", isNowSelected);
   const box = li.querySelector(".checkmark-box");
   if (box) box.classList.toggle("checked", isNowSelected);
 }
 
+/** Re-renders the scoped selected-assignee badge row. */
 function renderSelectedBadgesScoped() {
   const { selectedContainer } = scopedElements;
   selectedContainer.innerHTML = "";
@@ -155,6 +202,7 @@ function renderSelectedBadgesScoped() {
   });
 }
 
+/** Opens the global dropdown and shows the filtered contact list. */
 function showDropdown() {
   const dropdown = document.getElementById("assignedToDropdown");
   const selectedContainer = document.getElementById("assignedToSelected");
@@ -165,6 +213,7 @@ function showDropdown() {
   filterContacts();
 }
 
+/** Closes the global dropdown and restores the selected-badges container. */
 function hideDropdown() {
   const dropdown = document.getElementById("assignedToDropdown");
   const selectedContainer = document.getElementById("assignedToSelected");
@@ -174,6 +223,10 @@ function hideDropdown() {
   setWrapperOpen(false);
 }
 
+/**
+ * Adds or removes the `is-open` class on the global assignee wrapper element.
+ * @param {boolean} open
+ */
 function setWrapperOpen(open) {
   const input = document.getElementById('assignedToInput');
   if (!input) return;
@@ -181,12 +234,21 @@ function setWrapperOpen(open) {
   if (wrapper) wrapper.classList.toggle('is-open', open);
 }
 
+/**
+ * Re-renders the global dropdown list with the given contact subset.
+ * @param {object[]} [filteredContacts=contacts]
+ */
 function renderContactOptions(filteredContacts = contacts) {
   const list = document.getElementById("assignedToList");
   list.innerHTML = "";
   filteredContacts.forEach((contact) => list.appendChild(createContactLi(contact)));
 }
 
+/**
+ * Creates a global dropdown list item for a contact.
+ * @param {{ id: string, name: string, avatarClass: string, initials: string }} contact
+ * @returns {HTMLElement}
+ */
 function createContactLi(contact) {
   const isSelected = selectedAssignees.includes(contact.id);
   const li = document.createElement("li");
@@ -196,6 +258,7 @@ function createContactLi(contact) {
   return li;
 }
 
+/** Filters the global contact dropdown by the current input value. */
 function filterContacts() {
   const input = document.getElementById("assignedToInput");
   const query = input.value.trim().toLowerCase();
@@ -203,6 +266,11 @@ function filterContacts() {
   renderContactOptions(filtered);
 }
 
+/**
+ * Toggles a contact's selection in the global dropdown and updates badges.
+ * @param {string} id
+ * @param {HTMLElement|null} [listItemElement=null]
+ */
 function toggleAssignee(id, listItemElement = null) {
   const wasSelected = selectedAssignees.includes(id);
   if (wasSelected) selectedAssignees = selectedAssignees.filter((x) => x !== id);
@@ -212,12 +280,18 @@ function toggleAssignee(id, listItemElement = null) {
   renderSelectedBadges();
 }
 
+/**
+ * Updates the visual selected/checked state of a global list item.
+ * @param {HTMLElement} li
+ * @param {boolean} isNowSelected
+ */
 function updateListItem(li, isNowSelected) {
   li.classList.toggle("selected", isNowSelected);
   const box = li.querySelector(".checkmark-box");
   if (box) box.classList.toggle("checked", isNowSelected);
 }
 
+/** Re-renders the global selected-assignee badge row below the input. */
 function renderSelectedBadges() {
   const selectedContainer = document.getElementById("assignedToSelected");
   const dropdown = document.getElementById("assignedToDropdown");
@@ -228,6 +302,11 @@ function renderSelectedBadges() {
   selectedAssignees.forEach((id) => appendBadge(selectedContainer, id));
 }
 
+/**
+ * Appends a single avatar badge to a container for the given contact id.
+ * @param {HTMLElement} container
+ * @param {string} id
+ */
 function appendBadge(container, id) {
   const contact = contacts.find((c) => c.id === id);
   if (!contact) return;
@@ -237,6 +316,10 @@ function appendBadge(container, id) {
   container.appendChild(badge);
 }
 
+/**
+ * Returns the full contact objects for all currently selected assignees.
+ * @returns {Array<{ name: string, id: string, avatarClass: string, initials: string }>}
+ */
 function getAssignedTo() {
   return selectedAssignees.map((id) => {
     const contact = contacts.find((c) => c.id === id);
@@ -244,6 +327,7 @@ function getAssignedTo() {
   }).filter(Boolean);
 }
 
+/** Clears the selection and re-renders the empty badge row. */
 function resetAssignedTo() {
   selectedAssignees = [];
   renderSelectedBadges();

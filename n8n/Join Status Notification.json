@@ -1,0 +1,75 @@
+{
+  "name": "Join Status Notification",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "join-status-change",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "7a3bc456-e59b-4dc8-8d3b-e679936f1ba5",
+      "name": "Status Change Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "join-status-change"
+    },
+    {
+      "parameters": {
+        "fromEmail": "join@bajo-dev.ch",
+        "toEmail": "={{ $json.body.creatorEmail }}",
+        "subject": "=Status-Update zu Ihrem Ticket: {{ $json.body.title }}",
+        "html": "=<div style=\"font-family: Arial, sans-serif; font-size: 16px; color: #2a3647; line-height: 1.6;\">\n  <p>Guten Tag {{ $json.body.creatorName }},</p>\n\n  <p>es gibt ein Update zu Ihrem Ticket <strong>{{ $json.body.title }}</strong>.</p>\n\n  <p>Der Status wurde aktualisiert auf: <strong>{{ $json.body.statusLabel }}</strong>.</p>\n\n  <p>Wir halten Sie weiterhin auf dem Laufenden.</p>\n\n  <p>Freundliche Gr&uuml;&szlig;e<br>\n  <strong>Ihr Join-Team</strong></p>\n</div>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "77062c2a-cbef-4f71-b2fa-fb9ad186cbbb",
+      "name": "Send Status Mail",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        0
+      ],
+      "webhookId": "fed9c526-fc09-4215-9819-a0a4580dd424",
+      "credentials": {
+        "smtp": {
+          "id": "AacsKfad8bhewvRY",
+          "name": "SMTP account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Status Change Webhook": {
+      "main": [
+        [
+          {
+            "node": "Send Status Mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "ef15e4c8-b725-49e5-bea2-d71811513c31",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ec92ed73a10c527e2b17e03ba6b3f7af56591490d74555cc1116ccd9471b3d93"
+  },
+  "id": "TOkIP9BtVH8HW6Jd",
+  "tags": []
+}

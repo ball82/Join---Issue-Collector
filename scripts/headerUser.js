@@ -1,9 +1,17 @@
 
-
+/**
+ * @param {{ isGuest?: boolean, name?: string }} user
+ * @returns {boolean} True if the user has no real display name.
+ */
 function isGuestUser(user) {
   return user.isGuest || !user.name || user.name.trim() === "";
 }
 
+/**
+ * Derives up to two uppercase initials from a display name.
+ * @param {string} name
+ * @returns {string}
+ */
 function calculateInitials(name) {
   const parts = name.trim().split(/\s+/);
   if (parts.length >= 2) {
@@ -15,6 +23,7 @@ function calculateInitials(name) {
   return "G";
 }
 
+/** @returns {string} Initials for the current user from localStorage, or "G" for guests. */
 function getUserInitials() {
   try {
     const data = localStorage.getItem("loggedInUser");
@@ -27,6 +36,7 @@ function getUserInitials() {
   }
 }
 
+/** Writes initials into #userInitials; retries up to 1 s if the element is not yet in the DOM. */
 function showInitials() {
   const span = document.getElementById("userInitials");
   if (!span) {

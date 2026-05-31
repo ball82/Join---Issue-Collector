@@ -1,7 +1,11 @@
 
-
 let recaptchaVerifier;
 
+/**
+ * Shows a temporary toast notification.
+ * @param {string} message
+ * @param {"success"|"error"} [type="success"]
+ */
 function showNotification(message, type = "success") {
   const container = document.getElementById("notification-container");
   const notif = document.createElement("div");
@@ -11,6 +15,10 @@ function showNotification(message, type = "success") {
   setTimeout(() => notif.remove(), 3200);
 }
 
+/**
+ * Clears the inline form message and removes input-error classes for a form.
+ * @param {"login"|"signup"} formId
+ */
 function clearFormMessage(formId) {
   const el = document.getElementById(formId === "login" ? "login-message" : "signup-message");
   if (el) {
@@ -23,6 +31,13 @@ function clearFormMessage(formId) {
   });
 }
 
+/**
+ * Displays an inline form message and optionally highlights an invalid input.
+ * @param {"login"|"signup"} formId
+ * @param {string} message
+ * @param {"error"|"success"} [type="error"]
+ * @param {HTMLElement|null} [inputEl=null]
+ */
 function showFormMessage(formId, message, type = "error", inputEl = null) {
   const el = document.getElementById(formId === "login" ? "login-message" : "signup-message");
   if (!el) {
@@ -39,6 +54,11 @@ function showFormMessage(formId, message, type = "error", inputEl = null) {
   }
 }
 
+/**
+ * Returns a user-friendly validation message for a given invalid input element.
+ * @param {HTMLInputElement} input
+ * @returns {string}
+ */
 function getInvalidMessage(input) {
   if (input.type === "email") return input.value ? "Please enter a valid email address." : "Please enter your email address.";
   if (input.type === "checkbox") return "Please accept the privacy policy.";
@@ -46,6 +66,11 @@ function getInvalidMessage(input) {
   return "Please fill out this field.";
 }
 
+/**
+ * Checks that both password fields match and meet the minimum length.
+ * @param {string} formKey
+ * @returns {boolean}
+ */
 function validateSignupPasswords(formKey) {
   const pw = document.getElementById("signup-password").value.trim();
   const cpw = document.getElementById("confirm-password").value.trim();
@@ -54,6 +79,12 @@ function validateSignupPasswords(formKey) {
   return true;
 }
 
+/**
+ * Runs native constraint validation and shows an inline message on the first invalid field.
+ * @param {HTMLFormElement} formEl
+ * @param {"login"|"signup"} formKey
+ * @returns {boolean}
+ */
 function validateFormAndShow(formEl, formKey) {
   if (!formEl.checkValidity()) {
     const firstInvalid = formEl.querySelector(":invalid");
@@ -63,6 +94,7 @@ function validateFormAndShow(formEl, formKey) {
   return true;
 }
 
+/** Initialises the invisible reCAPTCHA verifier on first call. */
 function initRecaptcha() {
   if (!recaptchaVerifier && typeof RecaptchaVerifier !== "undefined") {
     recaptchaVerifier = new RecaptchaVerifier(
@@ -79,6 +111,11 @@ function initRecaptcha() {
   }
 }
 
+/**
+ * Maps a Firebase auth error code to a user-friendly registration error message.
+ * @param {{ code?: string, message?: string }} e
+ * @returns {string}
+ */
 function getAddUserErrorMessage(e) {
   if (e.code === "auth/email-already-in-use") return "This email is already registered!";
   if (e.code === "auth/weak-password") return "Password too weak (min. 6 characters).";
@@ -87,6 +124,7 @@ function getAddUserErrorMessage(e) {
   return "Registration error: " + (e.message || "Unknown error");
 }
 
+/** Registers a new user with email and password and redirects to the login page on success. */
 async function addUser() {
   clearFormMessage("signup");
   const form = document.getElementById("form-signup");
@@ -103,12 +141,18 @@ async function addUser() {
   } catch (e) { showNotification(getAddUserErrorMessage(e), "error"); }
 }
 
+/**
+ * Maps a Firebase auth error code to a user-friendly login error message.
+ * @param {{ code?: string }} e
+ * @returns {string}
+ */
 function getLoginErrorMessage(e) {
   if (e.code === "auth/user-not-found" || e.code === "auth/wrong-password") return "Invalid credentials.";
   if (e.code === "auth/invalid-email") return "Invalid email address.";
   return "Incorrect email or password.";
 }
 
+/** Authenticates a user with email and password and redirects to the summary page. */
 async function login() {
   clearFormMessage("login");
   const form = document.getElementById("form-login");
@@ -123,6 +167,7 @@ async function login() {
   } catch (e) { showNotification(getLoginErrorMessage(e), "error"); console.error("Login Error:", e); }
 }
 
+/** Signs in anonymously as a guest user and redirects to the summary page. */
 async function guestLogin() {
   clearFormMessage("login");
   try {
@@ -134,6 +179,7 @@ async function guestLogin() {
   } catch (e) { showNotification("Guest login failed.", "error"); console.error("Guest Login Error:", e); }
 }
 
+/** Sends a phone verification SMS and shows the code entry step. */
 async function phoneSignup() {
   clearFormMessage("signup");
   initRecaptcha();
@@ -150,6 +196,10 @@ async function phoneSignup() {
   }
 }
 
+/**
+ * Persists a phone-authenticated user's profile to Firebase and localStorage.
+ * @param {import("firebase/auth").User} user
+ */
 async function savePhoneUser(user) {
   const displayName = document.getElementById("name").value.trim() || "Phone User";
   await updateProfile(user, { displayName });
@@ -157,6 +207,7 @@ async function savePhoneUser(user) {
   localStorage.setItem("loggedInUser", JSON.stringify({ uid: user.uid, phone: user.phoneNumber, name: user.displayName }));
 }
 
+/** Confirms the SMS verification code and redirects to the board on success. */
 async function confirmPhoneCode() {
   clearFormMessage("signup");
   const codeEl = document.getElementById("phone-code");
@@ -170,6 +221,11 @@ async function confirmPhoneCode() {
   } catch (e) { showFormMessage("signup", "Incorrect code or error.", "error"); console.error("Phone Confirm Error:", e); }
 }
 
+/**
+ * Clears form messages and removes input-error styling when the user types.
+ * @param {string} fid - Form element id.
+ * @param {InputEvent} e
+ */
 function handleFormInput(fid, e) {
   const formKey = fid === "form-login" ? "login" : "signup";
   clearFormMessage(formKey);
@@ -177,6 +233,11 @@ function handleFormInput(fid, e) {
   if (fid === "form-signup") updateSignupButtonState();
 }
 
+/**
+ * Intercepts the native invalid event and shows the custom inline message instead.
+ * @param {string} fid - Form element id.
+ * @param {Event} e
+ */
 function handleFormInvalid(fid, e) {
   e.preventDefault();
   const formKey = fid === "form-login" ? "login" : "signup";
@@ -184,6 +245,7 @@ function handleFormInvalid(fid, e) {
   showFormMessage(formKey, getInvalidMessage(input), "error", input);
 }
 
+/** Attaches live input and invalid handlers to both login and signup forms. */
 function attachLiveHandlers() {
   ["form-login", "form-signup"].forEach((fid) => {
     const form = document.getElementById(fid);
@@ -194,11 +256,16 @@ function attachLiveHandlers() {
   });
 }
 
+/**
+ * Reads all signup form field values into a plain object.
+ * @returns {{ name: string, email: string, pw: string, cpw: string, privacy: boolean }}
+ */
 function getSignupFormValues() {
   const getVal = (id) => { const el = document.getElementById(id); return el ? el.value.trim() : ""; };
   return { name: getVal("name"), email: getVal("email"), pw: getVal("signup-password"), cpw: getVal("confirm-password"), privacy: document.getElementById("privacy")?.checked || false };
 }
 
+/** Enables or disables the signup submit button based on form completeness. */
 function updateSignupButtonState() {
   const { name, email, pw, cpw, privacy } = getSignupFormValues();
   const btn = document.getElementById("signup-submit-btn");
@@ -206,12 +273,14 @@ function updateSignupButtonState() {
   if (btn) btn.classList.toggle("inactive", !allValid);
 }
 
+/** Shows the signup form and hides the login form. */
 function showSignupForm() {
   document.getElementById("login-form").classList.add("hidden");
   document.getElementById("signup-form").classList.remove("hidden");
   clearFormMessage("signup");
 }
 
+/** Shows the login form and hides the signup form. */
 function showLoginForm() {
   document.getElementById("signup-form").classList.add("hidden");
   document.getElementById("login-form").classList.remove("hidden");
@@ -225,11 +294,13 @@ document.addEventListener("click", (e) => {
   else if (e.target.id === "guest-login-btn") guestLogin();
 });
 
+/** Attaches the submit handler to the login form. */
 function setupLoginForm() {
   const loginForm = document.getElementById("form-login");
   if (loginForm) loginForm.addEventListener("submit", (ev) => { ev.preventDefault(); login(); });
 }
 
+/** Attaches the submit handler and signup button click handler to the signup form. */
 function setupSignupForm() {
   const signupForm = document.getElementById("form-signup");
   if (!signupForm) return;
@@ -238,6 +309,7 @@ function setupSignupForm() {
   if (signupBtn) signupBtn.addEventListener("click", () => validateFormAndShow(signupForm, "signup"));
 }
 
+/** Attaches change/input listeners that update the signup button enabled state. */
 function attachSignupInputListeners() {
   const privacyEl = document.getElementById("privacy");
   if (privacyEl) privacyEl.addEventListener("change", updateSignupButtonState);

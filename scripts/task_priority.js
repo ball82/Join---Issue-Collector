@@ -1,7 +1,7 @@
 
-
 let selectedPriority = "Medium";
 
+/** Initialises the priority button group and sets the default active button. */
 function initPriorityButtons() {
   const buttons = document.querySelectorAll(".priority-buttons__button");
   if (!buttons.length) return;
@@ -10,6 +10,11 @@ function initPriorityButtons() {
   setInitialPriority(buttons);
 }
 
+/**
+ * Marks one button as active and updates the `selectedPriority` variable.
+ * @param {NodeList} buttons - All priority buttons.
+ * @param {HTMLElement} activeButton - The button to activate.
+ */
 function setPriorityActive(buttons, activeButton) {
   buttons.forEach((button) => {
     button.classList.remove("is-active");
@@ -21,6 +26,10 @@ function setPriorityActive(buttons, activeButton) {
   selectedPriority = activeButton.dataset.priority || "Medium";
 }
 
+/**
+ * Attaches click and keyboard handlers to every priority button.
+ * @param {NodeList} buttons
+ */
 function setupPriorityButtonInteractions(buttons) {
   buttons.forEach((btn) => {
     btn.setAttribute("role", "button");
@@ -38,6 +47,10 @@ function setupPriorityButtonInteractions(buttons) {
   });
 }
 
+/**
+ * Activates the default priority button (Medium or the first in the list).
+ * @param {NodeList} buttons
+ */
 function setInitialPriority(buttons) {
   let defaultButton = document.querySelector(
     ".priority-buttons__button.priority-buttons__button--active"
@@ -55,6 +68,7 @@ function setInitialPriority(buttons) {
   }
 }
 
+/** Resets the priority selection back to "Medium". */
 function resetPriorityButtons() {
   const buttons = document.querySelectorAll(".priority-buttons__button");
   if (!buttons.length) return;
@@ -63,6 +77,7 @@ function resetPriorityButtons() {
   setInitialPriority(buttons);
 }
 
+/** @returns {string} The currently selected priority label. */
 function getSelectedPriority() {
   return selectedPriority || "Medium";
 }

@@ -1,5 +1,5 @@
 
-
+/** @returns {object|null} The current user object from localStorage, or null. */
 function getCurrentUser() {
   if (typeof window.getCurrentUser === "function") {
     try { return window.getCurrentUser(); } catch (e) {}
@@ -11,12 +11,23 @@ function getCurrentUser() {
   } catch (e) { return null; }
 }
 
+/**
+ * @param {object|null} u - User object from localStorage.
+ * @returns {boolean} True when the user has a real, non-guest display name.
+ */
 function shouldShowName(u) {
   if (!u || typeof u.name === "undefined" || u.name === null) return false;
   const nm = String(u.name).trim();
   return nm && nm.toLowerCase() !== "guest";
 }
 
+/**
+ * Updates greeting text and name visibility for one greeting element pair.
+ * @param {HTMLElement|null} nameEl - Element that shows the user's name.
+ * @param {HTMLElement|null} textEl - Element that shows the greeting text.
+ * @param {object|null} user
+ * @param {string} displayStyle - CSS display value to use when showing the name.
+ */
 function updateGreetingElement(nameEl, textEl, user, displayStyle) {
   if (!nameEl || !textEl) return;
   if (shouldShowName(user)) {
@@ -29,11 +40,17 @@ function updateGreetingElement(nameEl, textEl, user, displayStyle) {
   }
 }
 
+/**
+ * Hides the splash screen element and removes the splash-active class from body.
+ * @param {HTMLElement} body
+ * @param {HTMLElement|null} splashScreen
+ */
 function hideSplashScreen(body, splashScreen) {
   body.classList.remove("splash-active");
   if (splashScreen) splashScreen.style.display = "none";
 }
 
+/** Renders the personalised greeting and auto-dismisses the splash on mobile. */
 function showGreeting() {
   const body = document.body;
   const splashScreen = document.getElementById("greeting-splash");

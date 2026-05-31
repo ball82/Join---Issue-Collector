@@ -1,5 +1,4 @@
 
-
 const AVATAR_COLORS = [
   "rgb(110, 82, 255)",
   "rgb(253, 112, 255)",
@@ -9,6 +8,11 @@ const AVATAR_COLORS = [
   "rgb(255, 123, 0)",
 ];
 
+/**
+ * Returns all uppercase initials from each word in a name.
+ * @param {string} [name=""]
+ * @returns {string}
+ */
 function getInitials(name = "") {
   return name
     .trim()
@@ -17,6 +21,12 @@ function getInitials(name = "") {
     .join("");
 }
 
+/**
+ * Picks a colour from AVATAR_COLORS based on a hash of the name and the index offset.
+ * @param {string} [name=""]
+ * @param {number} [index=0]
+ * @returns {string} CSS colour string.
+ */
 function getAvatarColor(name = "", index = 0) {
   if (!AVATAR_COLORS.length) {
     return "#ff7a00";
@@ -31,6 +41,11 @@ function getAvatarColor(name = "", index = 0) {
   return AVATAR_COLORS[colorIndex];
 }
 
+/**
+ * Returns the first letter of the first word and the first letter of the last word.
+ * @param {string} name
+ * @returns {string}
+ */
 function getInitialsFromName(name) {
   var parts = String(name).trim().split(" ");
   if (!parts.length) return "";
@@ -41,6 +56,11 @@ function getInitialsFromName(name) {
   );
 }
 
+/**
+ * Converts a YYYY-MM-DD date string to DD/MM/YY format.
+ * @param {string} dateStr
+ * @returns {string}
+ */
 function formatDateToDDMMYY(dateStr) {
   if (!dateStr) return "-";
   const parts = String(dateStr).split("-");
@@ -50,12 +70,22 @@ function formatDateToDDMMYY(dateStr) {
   return `${d}/${m}/${yy}`;
 }
 
+/**
+ * Capitalises the first character of a string.
+ * @param {string} str
+ * @returns {string}
+ */
 function capitalize(str) {
   if (!str) return "";
   str = String(str);
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+/**
+ * Escapes HTML special characters to prevent XSS.
+ * @param {string} str
+ * @returns {string}
+ */
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, "&amp;")
@@ -64,7 +94,11 @@ function escapeHtml(str) {
     .replace(/>/g, "&gt;");
 }
 
-
+/**
+ * Normalises a priority value to "Urgent", "Medium", or "Low".
+ * @param {string} p
+ * @returns {"Urgent"|"Medium"|"Low"}
+ */
 function normalizePriority(p) {
   const v = String(p || "Medium").toLowerCase();
   if (v.startsWith("u")) return "Urgent";
@@ -72,7 +106,11 @@ function normalizePriority(p) {
   return "Medium";
 }
 
-
+/**
+ * Returns the HEX colour associated with a given priority level.
+ * @param {string} priority
+ * @returns {string}
+ */
 function priorityColor(priority) {
   const p = normalizePriority(priority);
   if (p === "Urgent") return "#ff3d00";

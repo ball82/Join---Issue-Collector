@@ -1,17 +1,23 @@
 
-
+/** @returns {string} HTML for a "no tasks" placeholder card. */
 function noTaskTemplate() {
   return (
     '<div class="card-no-task">' + "<span>No tasks To do</span>" + "</div>"
   );
 }
 
+/** @returns {string} HTML for a "no search results" placeholder card. */
 function noResultsTemplate() {
   return (
     '<div class="card-no-task">' + "<span>No results found</span>" + "</div>"
   );
 }
 
+/**
+ * Renders a row of avatar chips for the given assignee list.
+ * @param {Array<string|{name:string,avatarClass?:string,initials?:string}>} [assignees=[]]
+ * @returns {string} HTML string of avatar spans.
+ */
 function renderAssignees(assignees = []) {
   if (!Array.isArray(assignees)) {
     assignees = assignees ? [assignees] : [];
@@ -45,6 +51,11 @@ function renderAssignees(assignees = []) {
     .join("");
 }
 
+/**
+ * Returns the full task card HTML for the Kanban board.
+ * @param {object} task
+ * @returns {string}
+ */
 function taskTemplate(task) {
   const { id, category, title, description, assignedTo, priority, subtasks } =
     task;
@@ -77,6 +88,11 @@ function taskTemplate(task) {
     </div>`;
 }
 
+/**
+ * Returns a coloured priority icon span.
+ * @param {string} priority
+ * @returns {string}
+ */
 function priorityIcon(priority) {
   const p = normalizePriority(priority);
   const color = priorityColor(p);
@@ -85,6 +101,11 @@ function priorityIcon(priority) {
   )}</span>`;
 }
 
+/**
+ * Returns the inline SVG for a priority level.
+ * @param {string} priority
+ * @returns {string}
+ */
 function priorityIconSVG(priority) {
   const p = normalizePriority(priority);
 
@@ -119,6 +140,12 @@ function priorityIconSVG(priority) {
     </svg>`;
 }
 
+/**
+ * Returns a styled priority badge with optional label text.
+ * @param {string} priority
+ * @param {boolean} [withText=true]
+ * @returns {string}
+ */
 function priorityBadge(priority, withText = true) {
   const p = normalizePriority(priority);
   const cls = p === "Urgent" ? "urgent" : p === "Low" ? "low" : "medium";
@@ -129,6 +156,11 @@ function priorityBadge(priority, withText = true) {
   )}${txt}</span>`;
 }
 
+/**
+ * Returns a subtask progress bar HTML snippet, or an empty string if there are no subtasks.
+ * @param {Array<{done?:boolean,checked?:boolean}>} subtasks
+ * @returns {string}
+ */
 function subtaskProgressHTML(subtasks) {
   const list = Array.isArray(subtasks) ? subtasks : [];
   if (!list.length) return "";
