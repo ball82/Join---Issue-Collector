@@ -204,7 +204,7 @@ async function updateTaskStatus(taskId, newStatus) {
   notifyStatusChange(tasks[index], previousStatus, normalizedStatus);
 }
 
-const STATUS_WEBHOOK_URL = "http://localhost:5678/webhook/join-status-change";
+const STATUS_WEBHOOK_URL = "https://bajo-dev.app.n8n.cloud/webhook/join-status-change";
 
 /**
  * Fires a webhook to notify the task creator when its status changes.
