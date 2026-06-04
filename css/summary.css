@@ -1,5 +1,5 @@
 
-main.addtask-wrap {
+main.summary-main {
   margin-left: 240px;
   padding: 196px 84px 32px;
   max-width: 1680px;
@@ -125,6 +125,12 @@ main.addtask-wrap {
   color: #ffffff;
 }
 
+.kpi-card3:hover #kpi-email {
+  background: none;
+  -webkit-text-fill-color: #ffffff;
+  color: #ffffff;
+}
+
 .kpi-icon {
   font-size: 22px;
   color: var(--panel);
@@ -191,6 +197,14 @@ main.addtask-wrap {
   font-weight: 400;
   font-style: normal;
   color: var(--ink);
+}
+
+#kpi-email {
+  background: linear-gradient(to bottom, #8933fc, #29abe2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .kpi-card.urgent .kpi-icon {
@@ -312,6 +326,10 @@ body.splash-active .greeting-splash {
     display: none;
   }
 
+  .kpi-left {
+    width: 100%;
+  }
+
   .summary-head {
     margin: 8px 0px 48px;
     gap: 12px;
@@ -341,7 +359,7 @@ body.splash-active .greeting-splash {
 }
 
 @media (max-width: 1310px) {
-  main.addtask-wrap {
+  main.summary-main {
     padding: 96px 20px 20px;
     margin-left: 0;
     margin-bottom: 90px;
@@ -361,7 +379,11 @@ body.splash-active .greeting-splash {
   .kpi-left {
     width: 100%;
     max-width: 600px;
-    align-items: center;
+    align-items: stretch;
+  }
+
+  .kpi-line {
+    width: 100%;
   }
 
   .summary-head {
@@ -394,8 +416,8 @@ body.splash-active .greeting-splash {
 }
 
 @media (max-width: 900px) {
-  main.addtask-wrap {
-    margin-left: 88px;
+  main.summary-main {
+    margin-left: 0px;
   }
 
   .page-title {
@@ -483,7 +505,7 @@ body.splash-active .greeting-splash {
   }
 
   .kpi-card {
-    padding: 8px 12px;
+    padding: 3px 6px;
     margin-bottom: 12px;
   }
 
@@ -495,11 +517,11 @@ body.splash-active .greeting-splash {
   }
 
   .kpi-value {
-    font-size: 47px;
+    font-size: 32px;
   }
 
   .kpi-label {
-    font-size: 16px;
+    font-size: 12px;
   }
 
   .deadlinedate {
@@ -507,12 +529,12 @@ body.splash-active .greeting-splash {
   }
 
   .deadlinetext {
-    font-size: 16px;
+    font-size: 12px;
   }
 
   .kpi-icon {
-    width: 18px;
-    height: 18px;
+    width: 9px;
+    height: 9px;
     margin: 0 8px 0 0;
   }
 
@@ -522,8 +544,8 @@ body.splash-active .greeting-splash {
   }
 
   .kpi-iconurgent {
-    width: 18px;
-    height: 18px;
+    width: 9px;
+    height: 9px;
     padding: 8px;
     margin: 6px 8px;
     display: flex;

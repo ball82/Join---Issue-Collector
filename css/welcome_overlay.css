@@ -80,10 +80,16 @@
     }
 
     .welcome-card__choices {
+        gap: 70px;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 28px;
+        align-items: stretch;
         margin-top: 32px;
+    }
+
+    .welcome-choice {
+        display: flex;
+        flex-direction: column;
     }
 
     .welcome-choice__label {
@@ -94,6 +100,10 @@
         font-weight: 500;
         color: #2a3647;
         margin-bottom: 18px;
+    }
+
+    .welcome-choice .welcome-btn {
+        margin-top: auto;
     }
 
     .welcome-choice__label svg {
@@ -107,6 +117,7 @@
         align-items: center;
         justify-content: center;
         box-sizing: border-box;
+        width: 100%;
         font-family: "Inter", sans-serif;
         font-size: 18px;
         font-weight: 600;
@@ -133,8 +144,6 @@
     }
 
     .welcome-btn--ghost {
-        width: auto;
-        min-width: max-content;
         background: #fff;
         color: #2a3647;
         border: 1px solid #a8b0bb;
@@ -169,9 +178,28 @@
     }
 
     @media (max-width: 560px) {
+        .welcome-overlay {
+            padding: 16px;
+        }
+
+        .welcome-card {
+            border-radius: 22px;
+            padding: 28px 22px;
+        }
+
+        .welcome-card__lead {
+            font-size: 16px;
+            margin-top: 24px;
+        }
+
         .welcome-card__choices {
             grid-template-columns: 1fr;
             gap: 24px;
+            margin-top: 24px;
+        }
+
+        .welcome-choice__label {
+            font-size: 18px;
         }
     }
 

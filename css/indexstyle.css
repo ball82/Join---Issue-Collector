@@ -242,6 +242,12 @@ button:not(.dark-button):hover {
 
   body {
     overflow: auto;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  header {
+    padding: 16px 20px;
   }
 
   #signup-bottom {
