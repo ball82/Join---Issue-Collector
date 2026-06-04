@@ -57,6 +57,18 @@ main.summary-main {
   gap: 24px;
 }
 
+.kpi-line--split .kpi-card {
+  flex: 3 1 0;
+  width: auto;
+  min-width: 0;
+}
+
+.kpi-line--split .kpi-card3 {
+  flex: 1 1 0;
+  width: auto;
+  min-width: 0;
+}
+
 .kpi-card {
   background: var(--panel);
   border-radius: 30px;
