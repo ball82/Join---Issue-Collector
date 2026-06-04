@@ -86,6 +86,28 @@ function normalizeTasks(raw) {
 }
 
 /**
+ * Normalises a single subtask entry to {title, done, checked}.
+ * Handles both string items (from AI email processing) and plain objects.
+ * @param {string|object} s
+ * @returns {{title:string, done:boolean, checked:boolean}|null}
+ */
+function normalizeSubtask(s) {
+  if (!s && s !== "") return null;
+  if (typeof s === "string") {
+    const title = s.trim();
+    if (!title) return null;
+    return { title, done: false, checked: false };
+  }
+  if (typeof s === "object") {
+    const title = String(s.title || s.text || s.name || "").trim();
+    if (!title) return null;
+    const done = !!(s.done || s.checked || s.completed);
+    return { title, done, checked: done };
+  }
+  return null;
+}
+
+/**
  * Fills in default values and normalises fields for a single task object.
  * @param {object} task
  * @returns {object} Fully enriched task object.
@@ -100,7 +122,9 @@ function enrichTask(task) {
     ? [task.assignedTo]
     : [];
 
-  const subtasks = Array.isArray(task.subtasks) ? task.subtasks : [];
+  const subtasks = Array.isArray(task.subtasks)
+    ? task.subtasks.map(normalizeSubtask).filter(Boolean)
+    : [];
   const status = normalizeTaskStatus(task.status || "triage");
 
   return {

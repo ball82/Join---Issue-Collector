@@ -113,6 +113,13 @@ function logout() {
 
 /** Wires up the header user-menu toggle and outside-click close after the header is injected. */
 function initHeaderUserMenu() {
+  const loggedIn = !!localStorage.getItem("loggedInUser");
+  if (!loggedIn) {
+    const headerUser = document.getElementById("headerUser");
+    if (headerUser) headerUser.style.display = "none";
+    return;
+  }
+
   const btn = document.getElementById("headerUserBtn");
   const menu = document.getElementById("userMenu");
   if (!btn || !menu) return;
