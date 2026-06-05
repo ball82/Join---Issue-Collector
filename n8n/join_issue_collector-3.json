@@ -1,0 +1,412 @@
+{
+  "name": "join_issue_collector",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "30904b80-90a3-4ab4-b6c6-aec46e8c32ac",
+      "name": "Email Trigger (IMAP)",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [
+        -1088,
+        96
+      ],
+      "credentials": {
+        "imap": {
+          "id": "UA3VKxZc9xhAJHXb",
+          "name": "IMAP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Daily throttle (\"cost airbag\"). Counts how many tickets were created today\n * using n8n's persistent workflow static data. Resets automatically each day.\n * Limit = 10 per day. Runs BEFORE the Groq call so no AI cost is incurred once\n * the limit is reached.\n */\nconst LIMIT = 10;\nconst staticData = $getWorkflowStaticData('global');\nconst today = new Date().toISOString().slice(0, 10);\n\nif (staticData.counterDate !== today) {\n  staticData.counterDate = today;\n  staticData.counter = 0;\n}\n\nconst used = staticData.counter || 0;\nconst limitReached = used >= LIMIT;\n\nreturn [{\n  json: {\n    ...$input.item.json,\n    throttle: { used, limit: LIMIT, limitReached },\n  },\n}];"
+      },
+      "id": "36746bb7-9f80-470c-913e-c1ad21f4acbf",
+      "name": "Throttle Check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -640,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "join@bajo-dev.ch",
+        "toEmail": "={{ $json.senderEmail }}",
+        "subject": "Dein Feature Request — Tageslimit erreicht",
+        "html": "=<div style=\"font-family: Arial, sans-serif; font-size: 16px; color: #2a3647; line-height: 1.6;\">\n  <p>Guten Tag {{ $json.senderName }},</p>\n\n  <p>vielen Dank für Ihre Nachricht! Leider ist das heutige Limit von 10 automatisch\n  verarbeiteten Anfragen bereits erreicht.</p>\n\n  <p>Ihre E-Mail wurde daher noch <strong>nicht</strong> automatisch in ein Ticket\n  umgewandelt. Bitte senden Sie sie morgen erneut — dann wird sie wieder automatisch\n  verarbeitet.</p>\n\n  <p>Wir bitten um Ihr Verständnis.</p>\n\n  <p>Freundliche Grüße<br>\n  <strong>Ihr Join-Team</strong></p>\n</div>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "af87a8df-d91b-4331-91d0-da5e70e5f5dd",
+      "name": "Send Limit Mail",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -192,
+        0
+      ],
+      "webhookId": "3d63acd6-0bb6-4b41-bbf4-38b3f34af818",
+      "credentials": {
+        "smtp": {
+          "id": "w4rNd5E0hkC2LDT4",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.groqBody }}",
+        "options": {}
+      },
+      "id": "b905ef43-e6b1-4e76-b10a-e405f406a19b",
+      "name": "Groq AI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        32,
+        288
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "sFWudX3lTMMYQh2j",
+          "name": "Header Auth account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Assembles a Join-compatible task.\n * - title: from the AI (short, in the email's language)\n * - description: VERBATIM from the original email (never AI-rewritten/translated)\n * - category / priority / dueDate / subtasks: classified by the AI\n * - creator: the sender, marked as external\n * Also repairs UTF-8/Latin-1 mojibake (Ã¤ -> ä) that some mail servers produce.\n */\n\nfunction fixEncoding(text) {\n  if (!text) return '';\n  if (!/Ã|Â/.test(text)) return text;\n  try {\n    return Buffer.from(text, 'latin1').toString('utf8');\n  } catch (e) {\n    return text;\n  }\n}\n\n// 1) Parse the AI answer (strip fences / think tags defensively)\nconst raw = $json.choices[0].message.content || '';\nconst cleaned = raw\n  .replace(/```json|```/g, '')\n  .replace(/<think>[\\s\\S]*?<\\/think>/g, '')\n  .trim();\n\nlet ai;\ntry {\n  ai = JSON.parse(cleaned);\n} catch (e) {\n  throw new Error('AI did not return valid JSON: ' + raw);\n}\n\n// 2) Original email parts (from the Edit Fields node), encoding-repaired\nconst senderEmail = fixEncoding($('Extracts email metadata and content for further processing').item.json.senderEmail || '');\nconst senderName  = fixEncoding($('Extracts email metadata and content for further processing').item.json.senderName || '');\nconst emailText   = fixEncoding($('Extracts email metadata and content for further processing').item.json.emailText || '');\n\n// 3) Description = original email body (verbatim), without the \"Betreff:\" line\nconst lines = emailText.split('\\n');\nconst bodyText = lines.slice(1).join('\\n').trim();\nconst description = (bodyText || emailText).trim() + '\\n— Dieses Ticket wurde KI-generiert.';\n\n// 4) Title from AI (also encoding-repaired), fallback to subject line\nconst subjectLine = (lines[0] || '').replace(/^Betreff:\\s*/i, '').trim();\nconst title = fixEncoding((ai.title && String(ai.title).trim()) || subjectLine || 'Anfrage');\n\n// 5) Validate the AI's classification values\nconst priority = ['Urgent', 'Medium', 'Low'].includes(ai.priority) ? ai.priority : 'Medium';\nconst category = ai.category === 'Technical Tasks' ? 'Technical Tasks' : 'User Story';\nconst dueDate  = typeof ai.dueDate === 'string' ? ai.dueDate : '';\n\n// 6) Extract and normalize subtasks from AI response\nconst rawSubtasks = Array.isArray(ai.subtasks) ? ai.subtasks : [];\nconst subtasks = rawSubtasks\n  .map(s => {\n    if (!s) return null;\n    if (typeof s === 'string') {\n      const t = s.trim();\n      return t ? { title: t, done: false } : null;\n    }\n    const t = String(s.title || s.text || s.name || '').trim();\n    return t ? { title: t, done: !!(s.done || s.checked || s.completed) } : null;\n  })\n  .filter(Boolean);\n\n// 7) Build the full task object\nconst task = {\n  title,\n  description,\n  dueDate,\n  priority,\n  category,\n  status: 'triage',\n  assignedTo: [],\n  subtasks,\n  creator: { name: senderName, email: senderEmail, type: 'external' },\n  isAiGenerated: true,\n};\n\nreturn [{ json: { task } }];\n"
+      },
+      "id": "c8ff3746-9e22-4054-b934-78ef7c7a5637",
+      "name": "Build Task",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        256,
+        128
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://join-60a91-default-rtdb.europe-west1.firebasedatabase.app/tasks.json",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.task) }}",
+        "options": {}
+      },
+      "id": "eeee4cda-d511-455a-ab7a-df42adc3b613",
+      "name": "Create Ticket in Firebase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        48
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Increments the daily counter after a ticket was successfully created.\n * Also writes the current count to Firebase so the Landing Page can\n * display it live without needing access to n8n directly.\n */\nconst LIMIT = 10;\nconst FIREBASE_URL = \"https://join-60a91-default-rtdb.europe-west1.firebasedatabase.app\";\n\nconst staticData = $getWorkflowStaticData('global');\nconst today = new Date().toISOString().slice(0, 10);\n\nif (staticData.counterDate !== today) {\n  staticData.counterDate = today;\n  staticData.counter = 0;\n}\nstaticData.counter = (staticData.counter || 0) + 1;\n\nconst used = staticData.counter;\nconst remaining = Math.max(0, LIMIT - used);\n\nawait this.helpers.httpRequest({\n  method: 'PUT',\n  url: `${FIREBASE_URL}/dailyCounter.json`,\n  body: {\n    date: today,\n    used,\n    remaining,\n    limit: LIMIT,\n  },\n  json: true,\n});\n\nreturn [{ json: { counter: used, remaining } }];"
+      },
+      "id": "862428fd-a22d-4087-a4a5-01b8efa9658b",
+      "name": "Counter +1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        704,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "join@bajo-dev.ch",
+        "toEmail": "={{ $('Extracts email metadata and content for further processing').item.json.senderEmail }}",
+        "subject": "Dein Feature Request wurde aufgenommen",
+        "html": "=<div style=\"font-family: Arial, sans-serif; font-size: 16px; color: #2a3647; line-height: 1.6;\">\n  <p>Guten Tag {{ $('Extracts email metadata and content for further processing').item.json.senderName }},</p>\n\n  <p>vielen Dank für Ihre Nachricht! Aus Ihrer E-Mail haben wir automatisch ein\n  Ticket auf unserem Board erstellt.</p>\n\n  <p>Sie werden automatisch benachrichtigt, sobald sich der Status Ihres Tickets\n  ändert. Sie müssen nichts weiter tun.</p>\n\n  <p>Freundliche Grüße<br>\n  <strong>Ihr Join-Team</strong></p>\n</div>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "a65f057a-bfea-49c8-a073-32c91f4ed34b",
+      "name": "Send Confirmation",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        928,
+        0
+      ],
+      "webhookId": "9b0ad7bf-3195-4705-bcf7-0fb5ebeefe03",
+      "credentials": {
+        "smtp": {
+          "id": "w4rNd5E0hkC2LDT4",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "join@bajo-dev.ch",
+        "toEmail": "={{ $('Extracts email metadata and content for further processing').item.json.senderEmail }}",
+        "subject": "Wir haben deine E-Mail erhalten",
+        "html": "=<div style=\"font-family: Arial, sans-serif; font-size: 16px; color: #2a3647; line-height: 1.6;\">\n  <p>Guten Tag {{ $('Extracts email metadata and content for further processing').item.json.senderName }},</p>\n\n  <p>vielen Dank für Ihre Nachricht — wir haben Ihre E-Mail erhalten.</p>\n\n  <p>Die automatische Verarbeitung hat in diesem Fall leider nicht funktioniert.\n  Keine Sorge: Unser Team schaut sich Ihre Anfrage persönlich an und meldet sich\n  zeitnah bei Ihnen.</p>\n\n  <p>Freundliche Grüße<br>\n  <strong>Ihr Join-Team</strong></p>\n</div>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "13fe2bd2-45e7-4150-8ab0-8b8e3fd4c820",
+      "name": "Send Error Notice",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        704,
+        384
+      ],
+      "webhookId": "6f5d15a9-02ce-4356-8d6f-6c2ce81d5915",
+      "credentials": {
+        "smtp": {
+          "id": "w4rNd5E0hkC2LDT4",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Erstellt den Request-Body für die Groq API als sauberes Objekt.\n */\n\nconst emailText = $json.emailText || '';\nconst today = new Date().toISOString().slice(0, 10);\n\nconst systemPrompt =\n  \"Du bist ein Triage-Assistent für das Join-Kanban-Board. Du erhältst eine E-Mail und gibst AUSSCHLIESSLICH ein strikt gültiges JSON-Objekt zurück (keine Einleitung, keine Erklärung, kein Markdown) mit genau fünf Feldern: title, category, priority, dueDate, subtasks. \" +\n  \"REGELN: title = ein kurzer, klarer Ticket-Titel mit maximal ca. 60 Zeichen, geschrieben in GENAU DERSELBEN SPRACHE wie die E-Mail (eine deutsche E-Mail erhält einen deutschen Titel, niemals übersetzen). \" +\n  \"category = exakt 'Technical Tasks' oder 'User Story' ('User Story' für Funktionswünsche oder Benutzeranforderungen, 'Technical Tasks' für Fehler, Abstürze, Bugs oder Backend-Arbeiten). \" +\n  \"priority = exakt 'Urgent', 'Medium' oder 'Low'. Wähle Urgent bei hoher Wichtigkeit oder Dringlichkeit in jeder Sprache, z. B. Deutsch: dringend, sehr wichtig, wichtig, sofort, so schnell wie möglich, kritisch, blockiert, Ausfall, Notfall, eilt; oder Englisch: urgent, asap, critical, blocker, broken, crash, production down, security, data loss. \" +\n  \"Wähle Low für: nice to have, wäre schön, kein Stress, irgendwann, Kleinigkeit, kosmetisch, unwichtig, minor, no rush. Wähle Medium nur dann, wenn kein klares Signal vorhanden ist. \" +\n  \"dueDate = 'YYYY-MM-DD', wenn ein Termin erwähnt oder impliziert wird (z. B. 'bis Ende Monat', 'bis am 15. Juli'), aufgelöst anhand des heutigen Datums \" + today + \", ansonsten ein leerer String ''. \" +\n  \"subtasks = ein Array von Objekten mit den Feldern 'title' (string) und 'done' (false). Extrahiere als Subtasks alle aufgezählten Punkte aus der E-Mail. Erkenne: Ordinale auf Deutsch (erstens, zweitens, drittens ...), Ordinale auf Englisch (firstly, secondly, thirdly ...), nummerierte Listen (1. 2. 3. oder 1) 2) 3)), sowie Zeilen die mit -, *, oder einem Aufzählungszeichen beginnen. Kürze jeden Subtask-Titel auf das Wesentliche (max. 60 Zeichen). Wenn keine Aufzählung erkennbar ist, setze subtasks als leeres Array []. \" +\n  \"Schreibe KEINE Beschreibung.\";\n\nconst userPrompt =\n  \"Erstelle das JSON für diese E-Mail. Der Titel MUSS in der Sprache der E-Mail sein (deutsche E-Mail = deutscher Titel, niemals übersetzen). \" +\n  \"Achte bei der Priorität auf deutsche Dringlichkeitswörter wie 'wichtig' oder 'dringend'.\\n\\n--- E-MAIL ---\\n\" +\n  emailText +\n  \"\\n--- ENDE ---\";\n\nconst requestBody = {\n  model: 'llama-3.3-70b-versatile',\n  temperature: 0.1,\n  messages: [\n    { role: 'system', content: systemPrompt },\n    { role: 'user', content: userPrompt },\n  ],\n};\n\nreturn [{\n  json: {\n    ...$json,\n    groqBody: JSON.stringify(requestBody),\n  },\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -224,
+        224
+      ],
+      "id": "ee7c653e-d57c-4bb1-97a3-5d64120cd74c",
+      "name": "Builds Groq request body"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "senderEmail",
+              "value": "={{ $json.from.match(/<(.+?)>/) ? $json.from.match(/<(.+?)>/)[1] : $json.from }}",
+              "type": "string"
+            },
+            {
+              "id": "a2",
+              "name": "senderName",
+              "value": "={{ $json.from.split('<')[0].trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "a3",
+              "name": "emailText",
+              "value": "=Betreff: {{ $json.subject }}\n\n{{ $json.textPlain }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d3f31a07-1a8c-49b3-b9bb-f87c2f990547",
+      "name": "Extracts email metadata and content for further processing",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -864,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.throttle.limitReached }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "8f194ef1-c753-40c1-842d-e1ec34eafb98",
+      "name": "if max limit true → send limit notification else → continue with AI processing",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -416,
+        96
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Email Trigger (IMAP)": {
+      "main": [
+        [
+          {
+            "node": "Extracts email metadata and content for further processing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Throttle Check": {
+      "main": [
+        [
+          {
+            "node": "if max limit true → send limit notification else → continue with AI processing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq AI": {
+      "main": [
+        [
+          {
+            "node": "Build Task",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Error Notice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Task": {
+      "main": [
+        [
+          {
+            "node": "Create Ticket in Firebase",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Error Notice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Ticket in Firebase": {
+      "main": [
+        [
+          {
+            "node": "Counter +1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Error Notice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Counter +1": {
+      "main": [
+        [
+          {
+            "node": "Send Confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Builds Groq request body": {
+      "main": [
+        [
+          {
+            "node": "Groq AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extracts email metadata and content for further processing": {
+      "main": [
+        [
+          {
+            "node": "Throttle Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if max limit true → send limit notification else → continue with AI processing": {
+      "main": [
+        [
+          {
+            "node": "Send Limit Mail",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Builds Groq request body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5e728283-c347-4843-a5df-ebd030424e3c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5840b5fc4662b6acb8faf20158b563d23b1ec94a2c324b309bc122aaa961b76a"
+  },
+  "id": "sMs4jLtLL7Vkc43q",
+  "tags": []
+}
