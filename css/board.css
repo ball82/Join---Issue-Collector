@@ -759,6 +759,12 @@ body {
     box-sizing: border-box;
   }
 
+  .card-no-task {
+    flex: 0 0 252px;
+    width: 252px;
+    box-sizing: border-box;
+  }
+
   #done-tasks {
     padding-bottom: 120px;
     margin-bottom: 80px;
