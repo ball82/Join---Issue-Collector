@@ -443,3 +443,28 @@ overlay-modal {
     padding: 24px;
   }
 }
+
+/* Overlay auf Mobile zwischen Header (oben) und Bottom-Nav (unten) begrenzen,
+   damit es nicht weiter nach unten als das Main-Feld reicht. */
+@media (max-width: 1310px) {
+  overlay-modal,
+  .overlay-modal {
+    bottom: 80px;
+    height: auto;
+  }
+
+  overlay-modal .modal-content,
+  .overlay-modal .modal-content {
+    height: auto;
+    max-height: 76vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 500px) {
+  overlay-modal,
+  .overlay-modal {
+    bottom: 85px;
+  }
+}

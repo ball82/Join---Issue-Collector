@@ -168,7 +168,7 @@
       if (letter !== currentLetter) { currentLetter = letter; container.appendChild(createLetterSection(letter)); }
       const item = createContactItem(c);
       container.lastElementChild.appendChild(item);
-      if (idx === 0) selectContact(c, item);
+      if (idx === 0 && window.innerWidth > 1023) selectContact(c, item);
     });
   }
 

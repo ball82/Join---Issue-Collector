@@ -41,7 +41,8 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
   align-items: center;
   justify-content: center;
 }
@@ -390,7 +391,7 @@
 .task-card-edit-form {
   display: flex;
   flex-direction: column;
-  max-height: 90vh;
+  max-height: 76vh;
   margin-bottom: 20px;
 }
 
@@ -455,4 +456,27 @@
     flex-direction: column;
 }
 
+}
+
+/* Overlay auf Mobile zwischen Header (oben) und Bottom-Nav (unten) begrenzen,
+   damit es nicht weiter nach unten als das Main-Feld reicht. */
+@media (max-width: 1310px) {
+  .overlay-task-card.overlay-task-card--open {
+    
+    bottom: 80px;
+    height: auto;
+  }
+
+  .overlay-task-card--open .task-card-content {
+    height: auto;
+    max-height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 500px) {
+  .overlay-task-card.overlay-task-card--open {
+    bottom: 85px;
+  }
 }
